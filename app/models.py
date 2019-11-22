@@ -24,3 +24,21 @@ class Client(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(pwhash=self.password_hash, password=password)
+
+
+class Train(db.Model):
+    numTrain = db.Column(db.Integer, primary_key=True)
+    voitures = db.relationship('Voiture', backref='train', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Train {}>'.format(self.numTrain)
+
+
+class Voiture(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    numVoiture = db.Column(db.Integer)
+    nbPlacesDispos = db.Column(db.Integer)
+    numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
+
+    def __repr__(self):
+        return '<Voiture {}>'.format(self.id)

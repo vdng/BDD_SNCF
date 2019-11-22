@@ -2,8 +2,8 @@ from flask import render_template, send_from_directory
 from app.main import bp
 
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/index', methods=['GET', 'POST'])
+@bp.route('/')
+@bp.route('/index')
 def index():
     return render_template('index.html', title='Accueil')
 
