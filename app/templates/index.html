@@ -4,6 +4,6 @@
 {% if current_user.is_anonymous %}
 <h1>SNCF</h1>
 {% else %}
-<h1>Bienvenue, {{ current_user.username }}!</h1>
+<h1>Bienvenue, {{ current_user.pseudo }}!</h1>
 {% endif %}
 {% endblock %}

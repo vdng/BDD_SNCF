@@ -5,16 +5,19 @@ from flask_login import UserMixin
 
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    return Client.query.get(int(id))
 
 
-class User(UserMixin, db.Model):
+class Client(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
+    pseudo = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
+    nom = db.Column(db.String(64))
+    prenom = db.Column(db.String(64))
+    age = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.id)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password=password)

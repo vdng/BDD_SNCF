@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm
-from app.models import User
+from app.models import Client
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -13,7 +13,7 @@ def login():
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = Client.query.filter_by(pseudo=form.pseudo.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Votre pseudo ou mot de passe est incorrect', 'danger')
             return redirect(url_for('auth.login'))
@@ -37,7 +37,7 @@ def register():
         return redirect(url_for('main.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data)
+        user = Client(pseudo=form.pseudo.data, nom=form.nom.data, prenom=form.prenom.data, age=form.age.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
