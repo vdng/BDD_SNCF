@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<h1>Train n°{{ train.numTrain }}</h1>
+
+<dir class="row">
+    <div class="col-sm-2">
+        {{ wtf.quick_form(form) }}
+    </div>
+</dir>
+
+<div class="row">
+    <div class="col-sml-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>voiture n°</th>
+                <th>nombre de places total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for voiture in voitures %}
+            <tr>
+                <th>{{ voiture.id }}</th>
+                <th>{{ voiture.numVoiture }}</th>
+                <th>{{ voiture.nbPlaces }}</th>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

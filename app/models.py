@@ -37,7 +37,7 @@ class Train(db.Model):
 class Voiture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     numVoiture = db.Column(db.Integer)
-    nbPlacesDispos = db.Column(db.Integer)
+    nbPlaces = db.Column(db.Integer)
     numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
 
     def __repr__(self):

@@ -11,20 +11,26 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table">
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th>#</th>
                 <th>nombre de voitures</th>
-                <th>nombre de places disponibles</th>
+                <th>nombre de places total</th>
             </tr>
             </thead>
             <tbody>
             {% for train in trains %}
-            <tr>
+            <tr class="clickable-row" data-href="{{ url_for('edit.edit_train', numTrain=train.numTrain) }}"
+                style="cursor:pointer">
                 <th>{{ train.numTrain }}</th>
+                <th>{{ train.voitures.count() }}</th>
                 <th>0</th>
-                <th>0</th>
+                <th>
+                    <a href="{{ url_for('edit.delete_train', numTrain=train.numTrain) }}" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                    </a>
+                </th>
             </tr>
             {% endfor %}
             </tbody>
@@ -32,4 +38,18 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script type="text/javascript">
+    $(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+
+
+
+</script>
 {% endblock %}
