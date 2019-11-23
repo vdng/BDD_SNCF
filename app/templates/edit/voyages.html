@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col-md-4">
+        {{ wtf.quick_form(form) }}
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Ville de départ</th>
+                <th>Gare de départ</th>
+                <th>Ville d'arrivée</th>
+                <th>Gare d'arrivée</th>
+                <th>Horaire de départ</th>
+                <th>Horaire d'arrivée</th>
+                <th>Train n°</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for voyage in voyages %}
+            <tr>
+                <th>{{ voyage.id }}</th>
+                <th>{{ voyage.gareDepart.ville }}</th>
+                <th>{{ voyage.gareDepart.nom }}</th>
+                <th>{{ voyage.gareArrivee.ville }}</th>
+                <th>{{ voyage.gareArrivee.nom }}</th>
+                <th>{{ voyage.horaireDepart }}</th>
+                <th>{{ voyage.horaireArrivee }}</th>
+                <th>{{ voyage.numTrain }}</th>
+                <th>
+                    <a href="{{ url_for('edit.delete_voyage', id=voyage.id) }}" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                    </a>
+                </th>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Pseudo</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Âge</th>
+                <th>Carte de réduction</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for client in clients %}
+            <tr>
+                <th>{{ client.id }}</th>
+                <th>{{ client.pseudo }}</th>
+                <th>{{ client.nom }}</th>
+                <th>{{ client.prenom }}</th>
+                <th>{{ client.age }}</th>
+                <th>Carte</th>
+                <th>
+                    <a href="{{ url_for('edit.delete_client', id=client.id) }}" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                    </a>
+                </th>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

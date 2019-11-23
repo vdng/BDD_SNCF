@@ -1,0 +1,14 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        {% if jumbotron_title %}
+        <h1 class="display-3">{{ jumbotron_title }}</h1>
+        {% elif title %}
+        <h1 class="display-3">{{ title }}</h1>
+        {% else %}
+        <h1 class="display-3">SNCF</h1>
+        {% endif %}
+        {% if description %}
+        <p class="lead">{{ description }}</p>
+        {% endif %}
+    </div>
+</div>

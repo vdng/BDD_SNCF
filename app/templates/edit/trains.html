@@ -17,6 +17,7 @@
                 <th>#</th>
                 <th>nombre de voitures</th>
                 <th>nombre de places total</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -43,13 +44,10 @@
 {% block scripts %}
 {{super()}}
 <script type="text/javascript">
-    $(document).ready(function($) {
+$(document).ready(function($) {
     $(".clickable-row").click(function() {
         window.location = $(this).data("href");
     });
 });
-
-
-
 </script>
 {% endblock %}

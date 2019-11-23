@@ -29,6 +29,7 @@ class Client(UserMixin, db.Model):
 class Train(db.Model):
     numTrain = db.Column(db.Integer, primary_key=True)
     voitures = db.relationship('Voiture', backref='train', lazy='dynamic')
+    voyages = db.relationship('Voyage', backref='train', lazy='dynamic')
 
     def __repr__(self):
         return '<Train {}>'.format(self.numTrain)
@@ -42,3 +43,26 @@ class Voiture(db.Model):
 
     def __repr__(self):
         return '<Voiture {}>'.format(self.id)
+
+
+class Gare(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ville = db.Column(db.String(64))
+    nom = db.Column(db.String(64))
+    departs = db.relationship('Voyage', backref='gareDepart', lazy='dynamic', foreign_keys='Voyage.idGareDepart')
+    arrivees = db.relationship('Voyage', backref='gareArrivee', lazy='dynamic', foreign_keys='Voyage.idGareArrivee')
+
+    def __repr__(self):
+        return '<Gare {} - {}>'.format(self.ville, self.nom)
+
+
+class Voyage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    horaireDepart = db.Column(db.DateTime, index=True)
+    horaireArrivee = db.Column(db.DateTime, index=True)
+    idGareDepart = db.Column(db.Integer, db.ForeignKey('gare.id'))
+    idGareArrivee = db.Column(db.Integer, db.ForeignKey('gare.id'))
+    numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
+
+    def __repr__(self):
+        return '<Voyage {}>'.format(self.id)

@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-{% if current_user.is_anonymous %}
-<h1>SNCF</h1>
-{% else %}
-<h1>Bienvenue, {{ current_user.pseudo }}!</h1>
-{% endif %}
+
 {% endblock %}
