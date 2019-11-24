@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
 
@@ -8,25 +7,21 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Billet id</th>
                 <th>Voiture</th>
                 <th>Place n°</th>
-                <th>Nom</th>
-                <th>Prénom</th>
+                <th>Prix</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             {% for billet in billets %}
             <tr>
-                <td>{{ billet.id }}</td>
                 <td>{{ billet.place.voiture.numVoiture }}</td>
                 <td>{{ billet.place.numPlace }}</td>
-                <td>{{ billet.client.nom }}</td>
-                <td>{{ billet.client.prenom }}</td>
+                <td>{{ billet.prix }} €</td>
                 <td>
-                    <a href="#" class="btn btn-danger btn-sm">
-                        <span class="fas fa-trash"></span> Delete
+                    <a href="#" class="btn btn-primary btn-sm">
+                        <span class="fas fa-ticket-alt"></span> Acheter
                     </a>
                 </td>
             </tr>

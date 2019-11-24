@@ -1,5 +1,43 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+<div class="row">
+    <div class="col-md-4">
+        {{ wtf.quick_form(form) }}
+    </div>
+</div>
 
+{% if voyages %}
+
+<div class="row mt-5">
+    <div class="col-sm-12">
+        <table class="table table-hover data-table">
+            <thead>
+            <tr>
+                <th>Horaire de départ</th>
+                <th>Horaire d'arrivée</th>
+                <th>Prix</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for voyage in voyages %}
+            <tr class="clickable-row" data-href="{{ url_for('main.voyage', id=voyage.id) }}"
+                style="cursor:pointer">
+                <td>{{ voyage.horaireDepart }}</td>
+                <td>{{ voyage.horaireArrivee }}</td>
+                <td>30€</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{% include "edit/_clickable_row.html" %}
+{% include "edit/_data_table.html" %}
 {% endblock %}
