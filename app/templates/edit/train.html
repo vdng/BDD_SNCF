@@ -14,9 +14,9 @@
         <table class="table">
             <thead>
             <tr>
-                <th>id</th>
-                <th>voiture n°</th>
-                <th>nombre de places total</th>
+                <th>Voiture id</th>
+                <th>Voiture n°</th>
+                <th>Capacité</th>
                 <th></th>
             </tr>
             </thead>
@@ -25,7 +25,13 @@
             <tr>
                 <th>{{ voiture.id }}</th>
                 <th>{{ voiture.numVoiture }}</th>
-                <th>{{ voiture.nbPlaces }}</th>
+                <th>{{ voiture.places.count() }}</th>
+                <th>
+                    <a href="{{ url_for('edit.delete_voiture', numTrain=train.numTrain, idVoiture=voiture.id) }}"
+                       class="btn btn-danger btn-sm">
+                        <span class="fas fa-trash"></span> Delete
+                    </a>
+                </th>
             </tr>
             {% endfor %}
             </tbody>

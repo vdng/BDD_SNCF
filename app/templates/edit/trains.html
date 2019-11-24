@@ -9,14 +9,14 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-hover">
+<div class="row mt-5">
+    <div class="col-sm-12">
+        <table class="table table-hover data-table">
             <thead>
             <tr>
                 <th>#</th>
-                <th>nombre de voitures</th>
-                <th>nombre de places total</th>
+                <th>Nombre de voitures</th>
+                <th>Capacité totale</th>
                 <th></th>
             </tr>
             </thead>
@@ -24,14 +24,14 @@
             {% for train in trains %}
             <tr class="clickable-row" data-href="{{ url_for('edit.edit_train', numTrain=train.numTrain) }}"
                 style="cursor:pointer">
-                <th>{{ train.numTrain }}</th>
-                <th>{{ train.voitures.count() }}</th>
-                <th>0</th>
-                <th>
+                <td>{{ train.numTrain }}</td>
+                <td>{{ train.voitures.count() }}</td>
+                <td>{{ train }}</td>
+                <td>
                     <a href="{{ url_for('edit.delete_train', numTrain=train.numTrain) }}" class="btn btn-danger btn-sm">
-                        <span class="glyphicon glyphicon-trash"></span> Delete
+                        <span class="fas fa-trash"></span> Delete
                     </a>
-                </th>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
@@ -43,11 +43,6 @@
 
 {% block scripts %}
 {{super()}}
-<script type="text/javascript">
-$(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    });
-});
-</script>
+{% include "edit/_clickable_row.html" %}
+{% include "edit/_data_table.html" %}
 {% endblock %}

@@ -3,16 +3,16 @@
 
 {% block app_content %}
 
+
 <div class="row">
     <div class="col-md-4">
         {{ wtf.quick_form(form) }}
     </div>
 </div>
 
-
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-hover">
+<div class="row mt-5">
+    <div class="col-sm-12">
+        <table class="table table-hover data-table">
             <thead>
             <tr>
                 <th>Ville</th>
@@ -23,13 +23,14 @@
             <tbody>
             {% for gare in gares %}
             <tr>
-                <th>{{ gare.ville }}</th>
-                <th>{{ gare.nom }}</th>
-                <th>
-                    <a href="{{ url_for('edit.delete_gare', ville=gare.ville, nom=gare.nom) }}" class="btn btn-danger btn-sm">
-                        <span class="glyphicon glyphicon-trash"></span> Delete
+                <td>{{ gare.ville }}</td>
+                <td>{{ gare.nom }}</td>
+                <td>
+                    <a href="{{ url_for('edit.delete_gare', ville=gare.ville, nom=gare.nom) }}"
+                       class="btn btn-danger btn-sm">
+                        <span class="fas fa-trash"></span> Delete
                     </a>
-                </th>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
@@ -37,4 +38,10 @@
     </div>
 </div>
 
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{% include "edit/_data_table.html" %}
 {% endblock %}

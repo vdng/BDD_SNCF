@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Billet id</th>
+                <th>Voiture</th>
+                <th>Place n°</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for billet in billets %}
+            <tr>
+                <th>{{ billet.id }}</th>
+                <th>{{ billet.place.voiture.numVoiture }}</th>
+                <th>{{ billet.place.numPlace }}</th>
+                <th>{{ billet.client.nom }}</th>
+                <th>{{ billet.client.prenom }}</th>
+                <th>
+                    <a href="#" class="btn btn-danger btn-sm">
+                        <span class="fas fa-trash"></span> Delete
+                    </a>
+                </th>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

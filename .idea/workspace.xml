@@ -2,30 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc3c56af-50ab-45e9-ac6a-351ad4f8810e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/templates/_title.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/edit/clients.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/edit/edit_index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/edit/gares.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/edit/voyages.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/edit/_clickable_row.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/edit/_data_table.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/edit/voyage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/edit/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/edit/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/edit/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/edit/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/errors/handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/errors/handlers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/_title.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/_title.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/auth/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/auth/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/edit/clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/clients.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/edit/edit_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/edit_index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/edit/gares.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/gares.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/edit/train.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/train.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/edit/trains.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/trains.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/errors/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/errors/404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/errors/500.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/errors/500.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/edit/voyages.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/voyages.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/alembic.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/env.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/script.py.mako" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/1985afaa9c8d_table_voiture_nbplacesdispos_nbplaces.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/c63f9ede1618_train_voiture_tables.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/ead0c67d8a05_table_client.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,14 +44,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates\edit" />
-      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\main" />
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates" />
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\static" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates\edit" />
+      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -132,5 +124,16 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/ProjetSNCF" />
     </ignored-roots>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/edit/routes.py</url>
+          <line>35</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

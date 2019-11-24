@@ -9,10 +9,9 @@
     </div>
 </div>
 
-
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-hover">
+<div class="row mt-5">
+    <div class="col-sm-12">
+        <table class="table table-hover data-table">
             <thead>
             <tr>
                 <th>#</th>
@@ -28,20 +27,21 @@
             </thead>
             <tbody>
             {% for voyage in voyages %}
-            <tr>
-                <th>{{ voyage.id }}</th>
-                <th>{{ voyage.gareDepart.ville }}</th>
-                <th>{{ voyage.gareDepart.nom }}</th>
-                <th>{{ voyage.gareArrivee.ville }}</th>
-                <th>{{ voyage.gareArrivee.nom }}</th>
-                <th>{{ voyage.horaireDepart }}</th>
-                <th>{{ voyage.horaireArrivee }}</th>
-                <th>{{ voyage.numTrain }}</th>
-                <th>
+            <tr class="clickable-row" data-href="{{ url_for('edit.edit_voyage', id=voyage.id) }}"
+                style="cursor:pointer">
+                <td>{{ voyage.id }}</td>
+                <td>{{ voyage.gareDepart.ville }}</td>
+                <td>{{ voyage.gareDepart.nom }}</td>
+                <td>{{ voyage.gareArrivee.ville }}</td>
+                <td>{{ voyage.gareArrivee.nom }}</td>
+                <td>{{ voyage.horaireDepart }}</td>
+                <td>{{ voyage.horaireArrivee }}</td>
+                <td>{{ voyage.numTrain }}</td>
+                <td>
                     <a href="{{ url_for('edit.delete_voyage', id=voyage.id) }}" class="btn btn-danger btn-sm">
-                        <span class="glyphicon glyphicon-trash"></span> Delete
+                        <span class="fas fa-trash"></span> Delete
                     </a>
-                </th>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
@@ -49,4 +49,10 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{% include "edit/_clickable_row.html" %}
+{% include "edit/_data_table.html" %}
 {% endblock %}

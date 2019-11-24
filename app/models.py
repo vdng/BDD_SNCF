@@ -16,6 +16,8 @@ class Client(UserMixin, db.Model):
     prenom = db.Column(db.String(64))
     age = db.Column(db.Integer)
 
+    billets = db.relationship('Billet', backref='client', lazy='dynamic')
+
     def __repr__(self):
         return '<User {}>'.format(self.id)
 
@@ -28,7 +30,8 @@ class Client(UserMixin, db.Model):
 
 class Train(db.Model):
     numTrain = db.Column(db.Integer, primary_key=True)
-    voitures = db.relationship('Voiture', backref='train', lazy='dynamic')
+
+    voitures = db.relationship('Voiture', backref='train', lazy='dynamic', cascade="all, delete, delete-orphan")
     voyages = db.relationship('Voyage', backref='train', lazy='dynamic')
 
     def __repr__(self):
@@ -38,19 +41,31 @@ class Train(db.Model):
 class Voiture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     numVoiture = db.Column(db.Integer)
-    nbPlaces = db.Column(db.Integer)
     numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
+
+    places = db.relationship('Place', backref='voiture', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return '<Voiture {}>'.format(self.id)
+
+
+class Place(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    numPlace = db.Column(db.Integer)
+    idVoiture = db.Column(db.Integer, db.ForeignKey('voiture.id'))
+
+    billets = db.relationship('Billet', backref='place', lazy='dynamic', cascade="all, delete, delete-orphan")
 
 
 class Gare(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ville = db.Column(db.String(64))
     nom = db.Column(db.String(64))
-    departs = db.relationship('Voyage', backref='gareDepart', lazy='dynamic', foreign_keys='Voyage.idGareDepart')
-    arrivees = db.relationship('Voyage', backref='gareArrivee', lazy='dynamic', foreign_keys='Voyage.idGareArrivee')
+
+    departs = db.relationship('Voyage', backref='gareDepart', lazy='dynamic', foreign_keys='Voyage.idGareDepart',
+                              cascade="all, delete, delete-orphan")
+    arrivees = db.relationship('Voyage', backref='gareArrivee', lazy='dynamic', foreign_keys='Voyage.idGareArrivee',
+                               cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return '<Gare {} - {}>'.format(self.ville, self.nom)
@@ -64,5 +79,15 @@ class Voyage(db.Model):
     idGareArrivee = db.Column(db.Integer, db.ForeignKey('gare.id'))
     numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
 
+    billets = db.relationship('Billet', backref='voyage', lazy='dynamic', cascade="all, delete, delete-orphan")
+
     def __repr__(self):
         return '<Voyage {}>'.format(self.id)
+
+
+class Billet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    prix = db.Column(db.Integer, default=30)
+    idVoyage = db.Column(db.Integer, db.ForeignKey('voyage.id'))
+    idPlace = db.Column(db.Integer, db.ForeignKey('place.id'))
+    idClient = db.Column(db.Integer, db.ForeignKey('client.id'))
