@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for
 from app import db
 from app.edit import bp
-from app.models import Train, Voiture, Gare, Client, Voyage, Place, Billet
-from app.edit.forms import AddTrainForm, AddVoitureForm, AddGareForm, AddVoyageForm
+from app.models import *
+from app.edit.forms import *
 
 
 @bp.route('/')
@@ -28,6 +28,7 @@ def trains():
             db.session.add(voiture)
         db.session.commit()
         flash('Nouveau train créé', 'info')
+        return redirect(url_for('edit.trains'))
     trains = Train.query.all()
     return render_template('edit/trains.html', title='Trains', trains=trains, form=form)
 
@@ -57,6 +58,7 @@ def edit_train(numTrain):
                 db.session.add(billet)
         db.session.commit()
         flash('Voiture ajoutée', 'info')
+        return redirect(url_for('edit.edit_train'))
 
     voitures = train.voitures.order_by(Voiture.numVoiture)
     return render_template('edit/train.html', title='Edit Train', jumbotron_title='Train n°{}'.format(train.numTrain),
@@ -101,6 +103,7 @@ def gares():
         db.session.add(gare)
         db.session.commit()
         flash('Nouvelle gare créée', 'info')
+        return redirect(url_for('edit.gares'))
     gares = Gare.query.all()
     return render_template('edit/gares.html', title='Gares', gares=gares, form=form)
 
@@ -142,13 +145,42 @@ def delete_client(id):
     return redirect(url_for('edit.clients'))
 
 
+# REDUCTIONS
+# ==========
+
+# Lister toutes les réductions et possibilité de supprimer des réductions
+@bp.route('/reductions', methods=['GET', 'POST'])
+def reductions():
+    form = AddReductionForm()
+    if form.validate_on_submit():
+        reduction = Reduction(type=form.type.data, pourcentage=form.pourcentage.data, prix=form.prix.data)
+        db.session.add(reduction)
+        db.session.commit()
+        flash('Nouvelle réduction créée', 'info')
+        return redirect(url_for('edit.reductions'))
+    reductions = Reduction.query.all()
+    return render_template('edit/reductions.html', title='Réductions', reductions=reductions, form=form)
+
+
+# Supprimer une réduction
+@bp.route('/reductions/delete/<id>')
+def delete_reduction(id):
+    reduction = Reduction.query.filter_by(id=id).first()
+    if reduction is None:
+        flash('La reduction {} n\'existe pas.'.format(id), 'danger')
+        return redirect(url_for('edit.reductions'))
+    db.session.delete(reduction)
+    db.session.commit()
+    flash('La reduction {} ({}) a bien été supprimée de la base de donnée'.format(id, reduction.type), 'success')
+    return redirect(url_for('edit.reductions'))
+
+
 # VOYAGES
 # =====
 
 # Lister tous les voyages, et possibilité de rajouter ou supprimer des voyages
 @bp.route('/voyages', methods=['GET', 'POST'])
 def voyages():
-
     # ajouter un voyage
     form = AddVoyageForm()
     gares = Gare.query.all()
@@ -170,6 +202,7 @@ def voyages():
                 db.session.add(billet)
         db.session.commit()
         flash('Nouveau voyage créé', 'info')
+        return redirect(url_for('edit.voyages'))
 
     # lister les voyages
     voyages = Voyage.query.all()
@@ -181,8 +214,9 @@ def voyages():
 def edit_voyage(id):
     voyage = Voyage.query.filter_by(id=id).first_or_404()
     billets = voyage.billets.all()
-    return render_template('edit/voyage.html', title='Edit Voyage', jumbotron_title='Voyage {}'.format(id),
-                           billets=billets)
+    return render_template('edit/voyage.html', title='Edit Voyage', billets=billets,
+                           jumbotron_title='{} {} -> {} {}'.format(voyage.gareDepart.ville, voyage.gareDepart.nom,
+                                                                   voyage.gareArrivee.ville, voyage.gareArrivee.nom))
 
 
 # Supprimer un voyage

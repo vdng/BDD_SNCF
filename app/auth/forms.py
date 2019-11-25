@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, EqualTo
+from wtforms.validators import ValidationError, DataRequired, EqualTo, NumberRange
 from app.models import Client
 
 
@@ -14,7 +14,9 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     nom = StringField('Nom', validators=[DataRequired()])
     prenom = StringField('Prenom', validators=[DataRequired()])
-    age = IntegerField('Age', validators=[DataRequired()])
+    age = IntegerField('Age', validators=[DataRequired(),
+                                          NumberRange(min=0, max=150,
+                                                      message="L'âge doit être compris etre %(min) et %(max) ans")])
     pseudo = StringField('Pseudo', validators=[DataRequired()])
     password = PasswordField('Mot de passe', validators=[DataRequired()])
     password2 = PasswordField('Confirmation du mot de masse',

@@ -10,11 +10,15 @@ def load_user(id):
 
 class Client(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    pseudo = db.Column(db.String(64))
+    pseudo = db.Column(db.String(64), unique=True)
     password_hash = db.Column(db.String(128))
     nom = db.Column(db.String(64))
     prenom = db.Column(db.String(64))
     age = db.Column(db.Integer)
+
+    argent = db.Column(db.Float, default=200)
+
+    idReduction = db.Column(db.Integer, db.ForeignKey('reduction.id'))
 
     billets = db.relationship('Billet', backref='client', lazy='dynamic')
 
@@ -27,12 +31,30 @@ class Client(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(pwhash=self.password_hash, password=password)
 
+    def set_argent(self, argent):
+        self.argent = argent
+
+    def set_idReduction(self, idReduction):
+        self.idReduction = idReduction
+
+
+class Reduction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(32))
+    pourcentage = db.Column(db.Integer)
+    prix = db.Column(db.Float)
+
+    db.clients = db.relationship('Client', backref='reduction', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Reduction {}>'.format(self.id)
+
 
 class Train(db.Model):
     numTrain = db.Column(db.Integer, primary_key=True)
 
     voitures = db.relationship('Voiture', backref='train', lazy='dynamic', cascade="all, delete, delete-orphan")
-    voyages = db.relationship('Voyage', backref='train', lazy='dynamic')
+    voyages = db.relationship('Voyage', backref='train', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return '<Train {}>'.format(self.numTrain)
@@ -87,7 +109,7 @@ class Voyage(db.Model):
 
 class Billet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    prix = db.Column(db.Integer, default=30)
+    prix = db.Column(db.Float, default=30)
     idVoyage = db.Column(db.Integer, db.ForeignKey('voyage.id'))
     idPlace = db.Column(db.Integer, db.ForeignKey('place.id'))
     idClient = db.Column(db.Integer, db.ForeignKey('client.id'))

@@ -13,33 +13,35 @@
 {% endblock %}
 
 {% block navbar %}
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="navbar-collapse">
-            <ul class="navbar-nav mr-auto">
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
                 {% if current_user.is_anonymous %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('edit.edit_index') }}"><span
+                <li><a href="{{ url_for('edit.edit_index') }}"><span
                         class="fas fa-pen"></span></a></li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
                 {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="">Mon profil</a></li>
+                <li><a href="{{ url_for('main.moncompte') }}">Mon profil</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_anonymous %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Me connecter</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Me connecter</a></li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Me déconnecter</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Me déconnecter</a></li>
                 {% endif %}
             </ul>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>
+
 {% endblock %}
 
 {% block content %}
-<div class="container mb-5">
+<div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}

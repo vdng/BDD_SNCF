@@ -11,6 +11,7 @@
                 <th>Billet id</th>
                 <th>Voiture</th>
                 <th>Place n°</th>
+                <th>Prix</th>
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th></th>
@@ -22,6 +23,7 @@
                 <td>{{ billet.id }}</td>
                 <td>{{ billet.place.voiture.numVoiture }}</td>
                 <td>{{ billet.place.numPlace }}</td>
+                <td>{{ billet.prix }} €</td>
                 <td>{{ billet.client.nom }}</td>
                 <td>{{ billet.client.prenom }}</td>
                 <td>

@@ -3,9 +3,10 @@
 
 {% block app_content %}
 
+
 <div class="row">
-    <div class="col-sm-5"></div>
-    <div class="col-sm-2">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
         {{ wtf.quick_form(form) }}
     </div>
 </div>
@@ -16,20 +17,22 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Nombre de voitures</th>
-                <th>Capacité totale</th>
+                <th>Type</th>
+                <th>Réduction</th>
+                <th>Prix</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            {% for train in trains %}
-            <tr class="clickable-row" data-href="{{ url_for('edit.edit_train', numTrain=train.numTrain) }}"
-                style="cursor:pointer">
-                <td>{{ train.numTrain }}</td>
-                <td>{{ train.voitures.count() }}</td>
-                <td>{{ train }}</td>
+            {% for reduction in reductions %}
+            <tr>
+                <td>{{ reduction.id }}</td>
+                <td>{{ reduction.type }}</td>
+                <td>{{ reduction.pourcentage }} %</td>
+                <td>{{ reduction.prix }} €</td>
                 <td>
-                    <a href="{{ url_for('edit.delete_train', numTrain=train.numTrain) }}" class="btn btn-danger btn-sm">
+                    <a href="{{ url_for('edit.delete_reduction', id=reduction.id) }}"
+                       class="btn btn-danger btn-sm">
                         <span class="fas fa-trash"></span> Delete
                     </a>
                 </td>
@@ -40,10 +43,10 @@
     </div>
 </div>
 
+
 {% endblock %}
 
 {% block scripts %}
 {{super()}}
-{% include "edit/_clickable_row.html" %}
 {% include "edit/_data_table.html" %}
 {% endblock %}
