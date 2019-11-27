@@ -16,13 +16,13 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Ville de départ</th>
                 <th>Gare de départ</th>
-                <th>Ville d'arrivée</th>
                 <th>Gare d'arrivée</th>
                 <th>Horaire de départ</th>
                 <th>Horaire d'arrivée</th>
                 <th>Train n°</th>
+                <th>1ere classe</th>
+                <th>2nde classe</th>
                 <th></th>
             </tr>
             </thead>
@@ -31,13 +31,13 @@
             <tr class="clickable-row" data-href="{{ url_for('edit.edit_voyage', id=voyage.id) }}"
                 style="cursor:pointer">
                 <td>{{ voyage.id }}</td>
-                <td>{{ voyage.gareDepart.ville }}</td>
-                <td>{{ voyage.gareDepart.nom }}</td>
-                <td>{{ voyage.gareArrivee.ville }}</td>
-                <td>{{ voyage.gareArrivee.nom }}</td>
+                <td>{{ voyage.gareDepart.ville }} - {{ voyage.gareDepart.nom }}</td>
+                <td>{{ voyage.gareArrivee.ville }} - {{ voyage.gareArrivee.nom }}</td>
                 <td>{{ voyage.horaireDepart }}</td>
                 <td>{{ voyage.horaireArrivee }}</td>
                 <td>{{ voyage.numTrain }}</td>
+                <td>{{ voyage.prixClasse1 }} €</td>
+                <td>{{ voyage.prixClasse2 }} €</td>
                 <td>
                     <a href="{{ url_for('edit.delete_voyage', id=voyage.id) }}" class="btn btn-danger btn-sm">
                         <span class="fas fa-trash"></span> Delete
@@ -54,6 +54,6 @@
 
 {% block scripts %}
 {{super()}}
-{% include "edit/_clickable_row.html" %}
-{% include "edit/_data_table.html" %}
+{% include "scripts/_clickable_row.html" %}
+{% include "scripts/_data_table.html" %}
 {% endblock %}

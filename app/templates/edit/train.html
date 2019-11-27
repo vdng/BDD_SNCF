@@ -12,11 +12,12 @@
 
 <div class="row">
     <div class="col-sml-12">
-        <table class="table">
+        <table class="table data-table">
             <thead>
             <tr>
                 <th>Voiture id</th>
                 <th>Voiture n°</th>
+                <th>Classe</th>
                 <th>Capacité</th>
                 <th></th>
             </tr>
@@ -24,15 +25,20 @@
             <tbody>
             {% for voiture in voitures %}
             <tr>
-                <th>{{ voiture.id }}</th>
-                <th>{{ voiture.numVoiture }}</th>
-                <th>{{ voiture.places.count() }}</th>
-                <th>
+                <td>{{ voiture.id }}</td>
+                <td>{{ voiture.numVoiture }}</td>
+                {% if voiture.classe1 %}
+                <td>1ere Classe</td>
+                {% else %}
+                <td>2nde Classe</td>
+                {% endif %}
+                <td>{{ voiture.places.count() }}</td>
+                <td>
                     <a href="{{ url_for('edit.delete_voiture', numTrain=train.numTrain, idVoiture=voiture.id) }}"
                        class="btn btn-danger btn-sm">
                         <span class="fas fa-trash"></span> Delete
                     </a>
-                </th>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
@@ -40,4 +46,9 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{% include "scripts/_data_table.html" %}
 {% endblock %}

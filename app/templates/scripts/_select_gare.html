@@ -1,0 +1,41 @@
+<script type="text/javascript">
+$(document).ready(function($) {
+	$(".gareDepart_select").change(function() {
+		var gare_id = $(".gareDepart_select").val();
+		var get_request = $.ajax({
+			type: 'GET',
+			url: '/gares/get_all_but/' + gare_id,
+		});
+
+		get_request.done(function(data){
+			var option_list = data;
+			$(".gareArrivee_select").empty();
+			for (var i = 0; i < option_list.length; i++) {
+				$(".gareArrivee_select").append(
+					$("<option></option>").attr("value", option_list[i][0]).text(option_list[i][1]));
+			}
+		});
+	});
+});
+
+$(document).ready(function($) {
+	$(".gareArrivee_select").change(function() {
+		var gare_id = $(".gareArrivee_select").val();
+		var get_request = $.ajax({
+			type: 'GET',
+			url: '/gares/get_all_but/' + gare_id,
+		});
+
+		get_request.done(function(data){
+			var option_list = data;
+			$(".gareDepart_select").empty();
+			for (var i = 0; i < option_list.length; i++) {
+				$(".gareDepart_select").append(
+					$("<option></option>").attr("value", option_list[i][0]).text(option_list[i][1]));
+			}
+		});
+	});
+});
+
+
+</script>

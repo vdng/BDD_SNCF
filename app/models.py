@@ -64,6 +64,7 @@ class Voiture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     numVoiture = db.Column(db.Integer)
     numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
+    classe1 = db.Column(db.Boolean)
 
     places = db.relationship('Place', backref='voiture', lazy='dynamic', cascade="all, delete, delete-orphan")
 
@@ -100,6 +101,8 @@ class Voyage(db.Model):
     idGareDepart = db.Column(db.Integer, db.ForeignKey('gare.id'))
     idGareArrivee = db.Column(db.Integer, db.ForeignKey('gare.id'))
     numTrain = db.Column(db.Integer, db.ForeignKey('train.numTrain'))
+    prixClasse1 = db.Column(db.Float)
+    prixClasse2 = db.Column(db.Float)
 
     billets = db.relationship('Billet', backref='voyage', lazy='dynamic', cascade="all, delete, delete-orphan")
 
@@ -109,7 +112,6 @@ class Voyage(db.Model):
 
 class Billet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    prix = db.Column(db.Float, default=30)
     idVoyage = db.Column(db.Integer, db.ForeignKey('voyage.id'))
     idPlace = db.Column(db.Integer, db.ForeignKey('place.id'))
     idClient = db.Column(db.Integer, db.ForeignKey('client.id'))

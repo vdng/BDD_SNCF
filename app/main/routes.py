@@ -1,8 +1,9 @@
-from flask import render_template, send_from_directory, redirect, url_for, flash
+from flask import render_template, send_from_directory, redirect, url_for, flash, make_response, request
 from app.main import bp
 from flask_login import current_user, login_required
 from app.main.forms import *
 from app.models import Voyage, Gare, Reduction
+import json
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -13,12 +14,26 @@ def index():
     gares = Gare.query.all()
     choix_gares = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
     form.gareDepart.choices = choix_gares
-    form.gareArrivee.choices = choix_gares
-    if form.validate_on_submit():
-        voyages = Voyage.query.filter_by(idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data)
-        return render_template('index.html', title='Accueil', voyages=voyages, form=form)
+    choix_gares_arrivee = choix_gares[1:]
+    form.gareArrivee.choices = choix_gares_arrivee
+
+    if request.method == 'POST':
+        form.gareArrivee.choices = choix_gares
+
+        if form.validate_on_submit():
+            voyages = Voyage.query.filter_by(idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data)
+            return render_template('index.html', title='Accueil', voyages=voyages, form=form)
     return render_template('index.html', title='Accueil', form=form)
 
+
+@bp.route('/gares/get_all_but/<gareId>')
+def gares_get_all_butt(gareId):
+    gares = Gare.query.filter(Gare.id != gareId)
+    data = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
+
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
 
 # Visualiser un voyage en particulier, avec les billets
 @bp.route('/voyages/<id>')

@@ -8,8 +8,8 @@ from datetime import datetime
 
 
 class RechercheTrajet(FlaskForm):
-    gareDepart = SelectField("Gare de départ", coerce=int, validators=[DataRequired()])
-    gareArrivee = SelectField("Gare d'arrivée", coerce=int, validators=[DataRequired()])
+    gareDepart = SelectField("Gare de départ", coerce=int, validators=[DataRequired()], choices=())
+    gareArrivee = SelectField("Gare d'arrivée", coerce=int, validators=[DataRequired()], choices=())
     submit = SubmitField("Rechercher")
 
 
@@ -21,3 +21,9 @@ class AcheterReduction(FlaskForm):
 class RechargerArgent(FlaskForm):
     recharge = IntegerField("€", validators=[DataRequired()])
     submit = SubmitField("Recharger")
+
+
+class ChoisirPlace(FlaskForm):
+    voiture = SelectField("Voiture", coerce=int, validators=[DataRequired()])
+
+

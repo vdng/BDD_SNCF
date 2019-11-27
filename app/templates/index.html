@@ -2,12 +2,36 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-<div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4">
-        {{ wtf.quick_form(form) }}
+
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class='row'>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.gareDepart.label(class_="control_label") }}
+                {{ form.gareDepart(class_="form-control gareDepart_select") }}
+            </div>
+        </div>
     </div>
-</div>
+
+    <div class='row'>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.gareArrivee.label(class_="control_label") }}
+                {{ form.gareArrivee(class_="form-control gareArrivee_select") }}
+            </div>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.submit(class_="btn btn-default") }}
+            </div>
+        </div>
+    </div>
+
+</form>
 
 {% if voyages %}
 
@@ -18,7 +42,8 @@
             <tr>
                 <th>Horaire de départ</th>
                 <th>Horaire d'arrivée</th>
-                <th>Prix</th>
+                <th>2nde classe</th>
+                <th>1ere classe</th>
             </tr>
             </thead>
             <tbody>
@@ -27,7 +52,8 @@
                 style="cursor:pointer">
                 <td>{{ voyage.horaireDepart }}</td>
                 <td>{{ voyage.horaireArrivee }}</td>
-                <td>30€</td>
+                <td>{{ voyage.prixClasse1 }} €</td>
+                <td>{{ voyage.prixClasse2 }} €</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -39,6 +65,8 @@
 
 {% block scripts %}
 {{super()}}
-{% include "edit/_clickable_row.html" %}
-{% include "edit/_data_table.html" %}
+{% include "scripts/_select_gare.html" %}
+{% include "scripts/_clickable_row.html" %}
+{% include "scripts/_data_table.html" %}
+
 {% endblock %}

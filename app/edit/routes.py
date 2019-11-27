@@ -21,7 +21,8 @@ def trains():
         train = Train()
         db.session.add(train)
         for i in range(form.nbVoitures.data):
-            voiture = Voiture(numVoiture=i + 1, train=train)
+            classe1 = True if i < form.nbVoituresClasse1.data else False
+            voiture = Voiture(numVoiture=i + 1, train=train, classe1=classe1)
             for j in range(form.nbPlacesParVoiture.data):
                 place = Place(numPlace=j + 1, voiture=voiture)
                 db.session.add(place)
@@ -48,7 +49,7 @@ def edit_train(numTrain):
         numVoiture = 1
         while numVoiture <= numTotVoitures and numVoiture == voitures[numVoiture - 1].numVoiture:
             numVoiture += 1
-        voiture = Voiture(numVoiture=numVoiture, train=train)
+        voiture = Voiture(numVoiture=numVoiture, train=train, classe1=form.classe1.data)
         db.session.add(voiture)
         for j in range(form.capacite.data):
             place = Place(numPlace=j + 1, voiture=voiture)
@@ -58,7 +59,7 @@ def edit_train(numTrain):
                 db.session.add(billet)
         db.session.commit()
         flash('Voiture ajoutée', 'info')
-        return redirect(url_for('edit.edit_train'))
+        return redirect(url_for('edit.edit_train', numTrain=numTrain))
 
     voitures = train.voitures.order_by(Voiture.numVoiture)
     return render_template('edit/train.html', title='Edit Train', jumbotron_title='Train n°{}'.format(train.numTrain),
@@ -193,7 +194,7 @@ def voyages():
     if form.validate_on_submit():
         voyage = Voyage(horaireDepart=form.horaireDepart.data, horaireArrivee=form.horaireArrivee.data,
                         idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data,
-                        numTrain=form.train.data)
+                        numTrain=form.train.data, prixClasse1=form.prixClasse1.data, prixClasse2=form.prixClasse2.data)
         db.session.add(voyage)
         train = Train.query.filter_by(numTrain=form.train.data).first()
         for voiture in train.voitures:

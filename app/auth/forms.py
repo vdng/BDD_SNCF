@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     nom = StringField('Nom', validators=[DataRequired()])
     prenom = StringField('Prenom', validators=[DataRequired()])
-    age = IntegerField('Age', validators=[DataRequired(),
+    age = IntegerField('Age', validators=[DataRequired(message="L'âge doit être un nombre"),
                                           NumberRange(min=0, max=150,
                                                       message="L'âge doit être compris etre %(min) et %(max) ans")])
     pseudo = StringField('Pseudo', validators=[DataRequired()])
