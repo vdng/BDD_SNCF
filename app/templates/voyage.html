@@ -2,33 +2,41 @@
 
 {% block app_content %}
 
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Voiture</th>
-                <th>Place n°</th>
-                <th>Prix</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for billet in billets %}
-            <tr>
-                <td>{{ billet.place.voiture.numVoiture }}</td>
-                <td>{{ billet.place.numPlace }}</td>
-                <td>{{ billet.prix }} €</td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm">
-                        <span class="fas fa-ticket-alt"></span> Acheter
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class='row'>
+        <div class='col-sm-3'>
+            <div class='form-group'>
+                {{ form.classe.label(class_="control_label") }}
+                {{ form.classe(class_="form-control classe_select") }}
+            </div>
+        </div>
+        <div class='col-sm-3'>
+            <div class='form-group'>
+                {{ form.voiture.label(class_="control_label") }}
+                {{ form.voiture(class_="form-control voiture_select") }}
+            </div>
+        </div>
+        <div class='col-sm-3'>
+            <div class='form-group'>
+                {{ form.place.label(class_="control_label") }}
+                {{ form.place(class_="form-control place_select") }}
+            </div>
+        </div>
+        <div class='col-sm-3'>
+            <div class='form-group'>
+                {{ form.submit(class_="btn btn-default") }}
+            </div>
+        </div>
 
+    </div>
+
+</form>
+
+{% endblock %}
+
+
+{% block scripts %}
+{{super()}}
+{% include "scripts/_select_place.html" %}
 {% endblock %}

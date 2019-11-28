@@ -1,0 +1,44 @@
+<script type="text/javascript">
+$(document).ready(function($) {
+	$(".classe_select").change(function() {
+		var classe = $(".classe_select").val() == 1 ? "1" : "2";
+		var get_request = $.ajax({
+			type: 'GET',
+			url: '/trains/{{ train.numTrain }}/classe' + classe,
+		});
+
+		get_request.done(function(data){
+			var option_list = data;
+			$(".voiture_select").empty();
+			for (var i = 0; i < option_list.length; i++) {
+				$(".voiture_select").append(
+					$("<option></option>").attr("value", option_list[i][0]).text(option_list[i][1]));
+			}
+		});
+		select_place();
+	});
+
+	$(".voiture_select").change(function() {
+		select_place();
+	});
+});
+
+function select_place() {
+	var voitureId = $(".voiture_select").val();
+	var get_request = $.ajax({
+		type: 'GET',
+		url: '/voitures/' + voitureId + '/places',
+	});
+
+	get_request.done(function(data){
+		var option_list = data;
+		$(".place_select").empty();
+		for (var i = 0; i < option_list.length; i++) {
+			$(".place_select").append(
+				$("<option></option>").attr("value", option_list[i][0]).text(option_list[i][1]));
+		}
+	});
+}
+
+
+</script>

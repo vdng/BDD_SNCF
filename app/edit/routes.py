@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app import db
 from app.edit import bp
 from app.models import *
@@ -184,26 +184,32 @@ def delete_reduction(id):
 def voyages():
     # ajouter un voyage
     form = AddVoyageForm()
-    gares = Gare.query.all()
-    choix_gares = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
-    form.gareDepart.choices = choix_gares
-    form.gareArrivee.choices = choix_gares
+
     trains = Train.query.all()
     choix_trains = [(train.numTrain, 'Train n°{}'.format(train.numTrain)) for train in trains]
     form.train.choices = choix_trains
-    if form.validate_on_submit():
-        voyage = Voyage(horaireDepart=form.horaireDepart.data, horaireArrivee=form.horaireArrivee.data,
-                        idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data,
-                        numTrain=form.train.data, prixClasse1=form.prixClasse1.data, prixClasse2=form.prixClasse2.data)
-        db.session.add(voyage)
-        train = Train.query.filter_by(numTrain=form.train.data).first()
-        for voiture in train.voitures:
-            for place in voiture.places:
-                billet = Billet(voyage=voyage, place=place)
-                db.session.add(billet)
-        db.session.commit()
-        flash('Nouveau voyage créé', 'info')
-        return redirect(url_for('edit.voyages'))
+
+    gares = Gare.query.all()
+    choix_gares = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
+    form.gareDepart.choices = choix_gares
+    choix_gares_arrivee = choix_gares[1:]
+    form.gareArrivee.choices = choix_gares_arrivee
+
+    if request.method == 'POST':
+        form.gareArrivee.choices = choix_gares
+        if form.validate_on_submit():
+            voyage = Voyage(horaireDepart=form.horaireDepart.data, horaireArrivee=form.horaireArrivee.data,
+                            idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data,
+                            numTrain=form.train.data, prixClasse1=form.prixClasse1.data, prixClasse2=form.prixClasse2.data)
+            db.session.add(voyage)
+            train = Train.query.filter_by(numTrain=form.train.data).first()
+            for voiture in train.voitures:
+                for place in voiture.places:
+                    billet = Billet(voyage=voyage, place=place)
+                    db.session.add(billet)
+            db.session.commit()
+            flash('Nouveau voyage créé', 'info')
+            return redirect(url_for('edit.voyages'))
 
     # lister les voyages
     voyages = Voyage.query.all()

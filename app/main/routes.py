@@ -2,7 +2,7 @@ from flask import render_template, send_from_directory, redirect, url_for, flash
 from app.main import bp
 from flask_login import current_user, login_required
 from app.main.forms import *
-from app.models import Voyage, Gare, Reduction
+from app.models import Voyage, Gare, Reduction, Place, Billet
 import json
 
 
@@ -11,10 +11,13 @@ import json
 @login_required
 def index():
     form = RechercheTrajet()
+
     gares = Gare.query.all()
+
     choix_gares = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
-    form.gareDepart.choices = choix_gares
     choix_gares_arrivee = choix_gares[1:]
+
+    form.gareDepart.choices = choix_gares
     form.gareArrivee.choices = choix_gares_arrivee
 
     if request.method == 'POST':
@@ -30,19 +33,76 @@ def index():
 def gares_get_all_butt(gareId):
     gares = Gare.query.filter(Gare.id != gareId)
     data = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
-
     response = make_response(json.dumps(data))
     response.content_type = 'application/json'
     return response
 
+
 # Visualiser un voyage en particulier, avec les billets
-@bp.route('/voyages/<id>')
-def voyage(id):
-    voyage = Voyage.query.filter_by(id=id).first_or_404()
-    billets = voyage.billets.all()
-    return render_template('voyage.html', title='Voyage', billets=billets,
-                           jumbotron_title='{} {} -> {} {}'.format(voyage.gareDepart.ville, voyage.gareDepart.nom,
-                                                                   voyage.gareArrivee.ville, voyage.gareArrivee.nom))
+@bp.route('/voyages/<voyageId>', methods=['GET', 'POST'])
+def voyage(voyageId):
+    voyage = Voyage.query.filter_by(id=voyageId).first_or_404()
+
+    train = Train.query.filter_by(numTrain=voyage.numTrain).first()
+
+    voitures = train.voitures.filter_by(classe1=False).all()
+    choix_voitures = [(voiture.id, '{}'.format(voiture.numVoiture)) for voiture in voitures]
+
+    places = Place.query.filter_by(idVoiture=voitures[0].id).all()
+    choix_places = [(place.id, '{}'.format(place.numPlace)) for place in places]
+
+    form = ChoisirPlace()
+    form.voiture.choices = choix_voitures
+    form.place.choices = choix_places
+
+    if request.method == 'POST':
+        choix_voitures = [(voiture.id, '{}'.format(voiture.numVoiture)) for voiture in train.voitures]
+        places = Place.query.filter_by(idVoiture=form.voiture.data)
+        choix_places = [(place.id, '{}'.format(place.numPlace)) for place in places]
+        form.voiture.choices = choix_voitures
+        form.place.choices = choix_places
+
+        if form.validate_on_submit():
+            classe1 = form.classe.data == 1
+            cout = voyage.prixClasse1 if classe1 else voyage.prixClasse2
+            if current_user.argent < cout:
+                flash('Vous n\'avez pas asser d\'argent pour acheter cet billet', 'danger')
+                return redirect(url_for('main.moncompte'))
+            current_user.set_argent(current_user.argent - cout)
+            billet = Billet.query.filter_by(idVoyage=voyageId, idPlace=form.place.data).first()
+            billet.set_idClient(current_user.id)
+            db.session.commit()
+            flash('Vous venez d\'acheter un billet de train', 'success')
+            return redirect(url_for('main.index'))
+    return render_template('voyage.html', title='Voyage', jumbotron_title='Réserver', form=form, train=train)
+
+
+@bp.route('/trains/<numTrain>/classe1')
+def get_voitures_classe1(numTrain):
+    train = Train.query.filter_by(numTrain=numTrain).first()
+    voitures = train.voitures.filter_by(classe1=True)
+    data = [(voiture.id, '{}'.format(voiture.numVoiture)) for voiture in voitures]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
+
+
+@bp.route('/trains/<numTrain>/classe2')
+def get_voitures_classe2(numTrain):
+    train = Train.query.filter_by(numTrain=numTrain).first()
+    voitures = train.voitures.filter_by(classe1=False)
+    data = [(voiture.id, '{}'.format(voiture.numVoiture)) for voiture in voitures]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
+
+@bp.route('/voitures/<voitureId>/places')
+def get_places(voitureId):
+    voiture = Voiture.query.filter_by(id=voitureId).first()
+    data = [(place.id, '{}'.format(place.numPlace)) for place in voiture.places]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
 
 
 @bp.route('/favicon.ico')

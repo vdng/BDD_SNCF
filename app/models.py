@@ -115,3 +115,6 @@ class Billet(db.Model):
     idVoyage = db.Column(db.Integer, db.ForeignKey('voyage.id'))
     idPlace = db.Column(db.Integer, db.ForeignKey('place.id'))
     idClient = db.Column(db.Integer, db.ForeignKey('client.id'))
+
+    def set_idClient(self, idClient):
+        self.idClient = idClient

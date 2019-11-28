@@ -1,14 +1,73 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+{% block styles %}
+{{ super() }}
+<link href="{{ url_for('static', filename='bootstrap-datetimepicker.min.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+
 {% block app_content %}
 
-<div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4">
-        {{ wtf.quick_form(form) }}
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class='row'>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.gareDepart.label(class_="control_label") }}
+                {{ form.gareDepart(class_="form-control gareDepart_select") }}
+            </div>
+        </div>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.horaireDepart.label(class_="control_label") }}
+                {{ form.horaireDepart(class_="form-control datetimepicker") }}
+            </div>
+        </div>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.train.label(class_="control_label") }}
+                {{ form.train(class_="form-control") }}
+            </div>
+        </div>
     </div>
-</div>
+
+    <div class='row'>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.gareArrivee.label(class_="control_label") }}
+                {{ form.gareArrivee(class_="form-control gareArrivee_select") }}
+            </div>
+        </div>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.horaireArrivee.label(class_="control_label") }}
+                {{ form.horaireArrivee(class_="form-control datetimepicker") }}
+            </div>
+        </div>
+        <div class='col-sm-2'>
+            <div class='form-group'>
+                {{ form.prixClasse1.label(class_="control_label") }}
+                {{ form.prixClasse1(class_="form-control") }}
+            </div>
+        </div>
+        <div class='col-sm-2'>
+            <div class='form-group'>
+                {{ form.prixClasse2.label(class_="control_label") }}
+                {{ form.prixClasse2(class_="form-control") }}
+            </div>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class="col-sm-8"></div>
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                {{ form.submit(class_="btn btn-default") }}
+            </div>
+        </div>
+    </div>
+
+</form>
 
 <div class="row">
     <div class="col-sm-12">
@@ -54,6 +113,18 @@
 
 {% block scripts %}
 {{super()}}
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.min.js') }}" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.fr.js') }}" charset="UTF-8"></script>
+<script type="text/javascript">$('.datetimepicker').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minuteStep: 10,
+		format: 'dd/mm/yyyy hh:ii'
+    });</script>
+{% include "scripts/_select_gare.html" %}
 {% include "scripts/_clickable_row.html" %}
 {% include "scripts/_data_table.html" %}
 {% endblock %}

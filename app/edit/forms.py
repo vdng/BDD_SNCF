@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField, DateTimeField
+from wtforms import StringField, BooleanField, SubmitField, IntegerField, SelectField, DateTimeField, FloatField
 from wtforms.validators import ValidationError, DataRequired, EqualTo
 from app.models import Train, Voiture, Gare
 from app import db
@@ -8,7 +8,7 @@ from datetime import datetime
 
 class AddTrainForm(FlaskForm):
     nbVoitures = IntegerField("Nombre de voitures", default=3,
-                              validators=[DataRequired(message="Le nombre de voitures est un nombre")])
+                              validators=[DataRequired(message="Le nombre de voitures est un nombre non nul")])
     nbPlacesParVoiture = IntegerField("Capacité par voiture", default=10,
                                       validators=[DataRequired(message="Veuillez indiquer un nombre de places valide")])
     nbVoituresClasse1 = IntegerField("Nombre de voitures 1ere classe",
@@ -46,19 +46,32 @@ class AddGareForm(FlaskForm):
 
 
 class AddVoyageForm(FlaskForm):
-    gareDepart = SelectField("Gare de départ", coerce=int, validators=[DataRequired()])
-    gareArrivee = SelectField("Gare d'arrivée", coerce=int, validators=[DataRequired()])
-    horaireDepart = DateTimeField("Horaire de départ", default=datetime.utcnow, validators=[DataRequired()])
-    horaireArrivee = DateTimeField("Horaire d'arrivée", default=datetime.utcnow, validators=[DataRequired()])
-    train = SelectField("Effectué par", coerce=int, validators=[DataRequired()])
-    prixClasse1 = IntegerField("Prix 1ere classe", validators=[DataRequired(message="Le prix doit être un nombre")],
-                               default=50)
-    prixClasse2 = IntegerField("Prix 2nde classe", validators=[DataRequired(message="Le prix doit être un nombre")],
-                               default=30)
+    gareDepart = SelectField("Gare de départ", coerce=int, choices=[])
+    gareArrivee = SelectField("Gare d'arrivée", coerce=int, choices=[])
+
+    horaireDepart = DateTimeField("Horaire de départ", default=datetime.utcnow, validators=[DataRequired()],
+                                  format='%d/%m/%Y %H:%M')
+    horaireArrivee = DateTimeField("Horaire d'arrivée", default=datetime.utcnow, validators=[DataRequired()],
+                                   format='%d/%m/%Y %H:%M')
+
+    train = SelectField("Effectué par", coerce=int, choices=[])
+
+    prixClasse1 = FloatField("Prix 1ere classe", validators=[DataRequired(message="Le prix doit être un nombre")],
+                             default=50)
+    prixClasse2 = FloatField("Prix 2nde classe", validators=[DataRequired(message="Le prix doit être un nombre")],
+                             default=30)
     submit = SubmitField("Ajouter un voyage")
 
     def validate_prixClasse2(self, prixClasse2):
+        if type(prixClasse2) != float:
+            raise ValidationError("Le prix doit être un nombre")
         if self.prixClasse1.data < prixClasse2.data:
+            raise ValidationError("La 2nde classe doit être moins chère que la 1ere")
+
+    def validate_prixClasse1(self, prixClasse1):
+        if type(prixClasse1) != float:
+            raise ValidationError("Le prix doit être un nombre")
+        if self.prixClasse2.data < prixClasse1.data:
             raise ValidationError("La 1ere classe doit être plus chère que la 2nde")
 
     def validate_horaireArrivee(self, horaireArrivee):
@@ -66,10 +79,6 @@ class AddVoyageForm(FlaskForm):
             raise ValidationError("Le train ne peut pas arriver avant son départ")
         elif horaireArrivee.data == self.horaireDepart.data:
             raise ValidationError("Le train ne peut pas arriver en même temps que départ")
-
-    def validate_gareArrivee(self, gareArrivee):
-        if gareArrivee.data == self.gareDepart.data:
-            raise ValidationError("La gare d'arrivée ne peut pas être la même que la gare de départ")
 
 
 class AddReductionForm(FlaskForm):
