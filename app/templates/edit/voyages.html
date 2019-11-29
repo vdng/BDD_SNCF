@@ -12,48 +12,69 @@
     {{ form.hidden_tag() }}
     <div class='row'>
         <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.gareDepart.label(class_="control_label") }}
+            <div class='form-group {% if form.gareDepart.errors %}has-error has-feedback{% endif %}'>
+                {{ form.gareDepart.label(class_="control-label") }}
                 {{ form.gareDepart(class_="form-control gareDepart_select") }}
+                {% for error in form.gareDepart.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
         <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.horaireDepart.label(class_="control_label") }}
+            <div class='form-group {% if form.horaireDepart.errors %}has-error{% endif %}'>
+                {{ form.horaireDepart.label(class_="control-label") }}
                 {{ form.horaireDepart(class_="form-control datetimepicker") }}
+                {% for error in form.horaireDepart.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
         <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.train.label(class_="control_label") }}
+            <div class='form-group {% if form.train.errors %}has-error{% endif %}'>
+                {{ form.train.label(class_="control-label") }}
                 {{ form.train(class_="form-control") }}
+                {% for error in form.train.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
     </div>
 
     <div class='row'>
         <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.gareArrivee.label(class_="control_label") }}
+            <div class='form-group {% if form.gareArrivee.errors %}has-error{% endif %}'>
+                {{ form.gareArrivee.label(class_="control-label") }}
                 {{ form.gareArrivee(class_="form-control gareArrivee_select") }}
+                {% for error in form.gareArrivee.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
         <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.horaireArrivee.label(class_="control_label") }}
+            <div class='form-group {% if form.horaireArrivee.errors %}has-error{% endif %}'>
+                {{ form.horaireArrivee.label(class_="control-label text-error") }}
                 {{ form.horaireArrivee(class_="form-control datetimepicker") }}
+                {% for error in form.horaireArrivee.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
         <div class='col-sm-2'>
-            <div class='form-group'>
-                {{ form.prixClasse1.label(class_="control_label") }}
+            <div class='form-group {% if form.prixClasse1.errors %}has-error{% endif %}'>
+                {{ form.prixClasse1.label(class_="control-label") }}
                 {{ form.prixClasse1(class_="form-control") }}
+                {% for error in form.prixClasse1.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
         <div class='col-sm-2'>
-            <div class='form-group'>
-                {{ form.prixClasse2.label(class_="control_label") }}
+            <div class='form-group {% if form.prixClasse2.errors %}has-error{% endif %}'>
+                {{ form.prixClasse2.label(class_="control-label") }}
                 {{ form.prixClasse2(class_="form-control") }}
+                {% for error in form.prixClasse2.errors %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -113,8 +134,10 @@
 
 {% block scripts %}
 {{super()}}
-<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.min.js') }}" charset="UTF-8"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.fr.js') }}" charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.min.js') }}"
+        charset="UTF-8"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.fr.js') }}"
+        charset="UTF-8"></script>
 <script type="text/javascript">$('.datetimepicker').datetimepicker({
         language:  'fr',
         weekStart: 1,
@@ -123,7 +146,16 @@
 		startView: 2,
 		minuteStep: 10,
 		format: 'dd/mm/yyyy hh:ii'
-    });</script>
+    });
+
+
+
+
+
+
+
+
+</script>
 {% include "scripts/_select_gare.html" %}
 {% include "scripts/_clickable_row.html" %}
 {% include "scripts/_data_table.html" %}

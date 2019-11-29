@@ -48,12 +48,12 @@
             </thead>
             <tbody>
             {% for voyage in voyages %}
-            <tr class="clickable-row" data-href="{{ url_for('main.voyage', id=voyage.id) }}"
+            <tr class="clickable-row" data-href="{{ url_for('main.voyage', voyageId=voyage.id) }}"
                 style="cursor:pointer">
                 <td>{{ voyage.horaireDepart }}</td>
                 <td>{{ voyage.horaireArrivee }}</td>
-                <td>{{ voyage.prixClasse1 }} €</td>
-                <td>{{ voyage.prixClasse2 }} €</td>
+                <td>{{ voyage.prixClasse1 * (1 - reduction / 100) }} €</td>
+                <td>{{ voyage.prixClasse2 * (1 - reduction / 100) }} €</td>
             </tr>
             {% endfor %}
             </tbody>

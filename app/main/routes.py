@@ -20,12 +20,15 @@ def index():
     form.gareDepart.choices = choix_gares
     form.gareArrivee.choices = choix_gares_arrivee
 
+    reduction = Reduction.query.filter_by(id=current_user.idReduction).first()
+    reduction = 0 if reduction is None else reduction.pourcentage
+
     if request.method == 'POST':
         form.gareArrivee.choices = choix_gares
 
         if form.validate_on_submit():
             voyages = Voyage.query.filter_by(idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data)
-            return render_template('index.html', title='Accueil', voyages=voyages, form=form)
+            return render_template('index.html', title='Accueil', voyages=voyages, form=form, reduction=reduction)
     return render_template('index.html', title='Accueil', form=form)
 
 

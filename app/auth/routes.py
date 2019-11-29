@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from app import db
@@ -36,12 +36,19 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = Client(pseudo=form.pseudo.data, nom=form.nom.data, prenom=form.prenom.data, age=form.age.data,
-                      argent=300)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Félicitations, vous avez créer votre compte !', 'info')
-        return redirect(url_for('auth.login'))
+    if request.method == 'POST':
+
+        if form.validate_on_submit():
+            user = Client(pseudo=form.pseudo.data, nom=form.nom.data, prenom=form.prenom.data, age=form.age.data,
+                          argent=300)
+            user.set_password(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            flash('Félicitations, vous avez créer votre compte !', 'info')
+            current_app.logger.info('redirect')
+            return redirect(url_for('auth.login'))
+        else:
+            current_app.logger.error('Erreur de formulaire')
+
+    current_app.logger.info('render_template')
     return render_template('auth/register.html', title='Créer son compte', form=form)

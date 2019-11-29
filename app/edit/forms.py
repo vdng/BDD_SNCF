@@ -4,6 +4,7 @@ from wtforms.validators import ValidationError, DataRequired, EqualTo
 from app.models import Train, Voiture, Gare
 from app import db
 from datetime import datetime
+from random import randint
 
 
 class AddTrainForm(FlaskForm):
@@ -54,31 +55,30 @@ class AddVoyageForm(FlaskForm):
     horaireArrivee = DateTimeField("Horaire d'arrivée", default=datetime.utcnow, validators=[DataRequired()],
                                    format='%d/%m/%Y %H:%M')
 
-    train = SelectField("Effectué par", coerce=int, choices=[])
+    train = SelectField("Effectué par", coerce=int, choices=[], validators=[DataRequired(message="Aucun train sélectionné")])
 
-    prixClasse1 = FloatField("Prix 1ere classe", validators=[DataRequired(message="Le prix doit être un nombre")],
-                             default=50)
-    prixClasse2 = FloatField("Prix 2nde classe", validators=[DataRequired(message="Le prix doit être un nombre")],
-                             default=30)
+    prixClasse1 = FloatField("Prix 1ere classe", validators=[DataRequired(message="Le prix doit être un nombre")])
+    prixClasse2 = FloatField("Prix 2nde classe", validators=[DataRequired(message="Le prix doit être un nombre")])
     submit = SubmitField("Ajouter un voyage")
 
-    def validate_prixClasse2(self, prixClasse2):
-        if type(prixClasse2) != float:
-            raise ValidationError("Le prix doit être un nombre")
-        if self.prixClasse1.data < prixClasse2.data:
-            raise ValidationError("La 2nde classe doit être moins chère que la 1ere")
-
-    def validate_prixClasse1(self, prixClasse1):
-        if type(prixClasse1) != float:
-            raise ValidationError("Le prix doit être un nombre")
-        if self.prixClasse2.data < prixClasse1.data:
-            raise ValidationError("La 1ere classe doit être plus chère que la 2nde")
+    def validate_horaireDepart(self, horaireDepart):
+        if self.horaireArrivee.data < horaireDepart.data:
+            raise ValidationError("Le voyage ne peut finir avant qu'il ait commencé !")
+        elif self.horaireArrivee.data == horaireDepart.data:
+            raise ValidationError("Les horaires de départ et d'arrivée sont les mêmes")
 
     def validate_horaireArrivee(self, horaireArrivee):
-        if horaireArrivee.data < self.horaireDepart.data:
-            raise ValidationError("Le train ne peut pas arriver avant son départ")
-        elif horaireArrivee.data == self.horaireDepart.data:
-            raise ValidationError("Le train ne peut pas arriver en même temps que départ")
+        if self.horaireDepart.data >= horaireArrivee.data:
+            raise ValidationError()
+
+    def validate_prixClasse1(self, prixClasse1):
+        if self.prixClasse2.data > prixClasse1.data:
+            raise ValidationError("La première classe est moins chère que la seconde")
+
+    def validate_prixClasse2(self, prixClasse2):
+        if self.prixClasse1.data < prixClasse2.data:
+            raise ValidationError()
+
 
 
 class AddReductionForm(FlaskForm):

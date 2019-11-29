@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, current_app
 from app import db
 from app.edit import bp
 from app.models import *
@@ -41,6 +41,7 @@ def edit_train(numTrain):
     voitures = train.voitures.order_by(Voiture.numVoiture)
     numTotVoitures = voitures.count()
 
+
     voyages = Voyage.query.filter_by(numTrain=numTrain).all()
 
     # Ajouter une voiture
@@ -60,6 +61,8 @@ def edit_train(numTrain):
         db.session.commit()
         flash('Voiture ajoutée', 'info')
         return redirect(url_for('edit.edit_train', numTrain=numTrain))
+    else:
+        flash('Veuillez correctement remplir le formulaire')
 
     voitures = train.voitures.order_by(Voiture.numVoiture)
     return render_template('edit/train.html', title='Edit Train', jumbotron_title='Train n°{}'.format(train.numTrain),
@@ -185,9 +188,10 @@ def voyages():
     # ajouter un voyage
     form = AddVoyageForm()
 
-    trains = Train.query.all()
-    choix_trains = [(train.numTrain, 'Train n°{}'.format(train.numTrain)) for train in trains]
-    form.train.choices = choix_trains
+    form.prixClasse1.data = randint(50, 100)
+    form.prixClasse2.data = randint(20, form.prixClasse1.data)
+
+    form.train.choices = []
 
     gares = Gare.query.all()
     choix_gares = [(gare.id, '{} - {}'.format(gare.ville, gare.nom)) for gare in gares]
@@ -197,6 +201,10 @@ def voyages():
 
     if request.method == 'POST':
         form.gareArrivee.choices = choix_gares
+        trains = Train.query.all()
+        choix_trains = [(train.numTrain, 'Train n°{}'.format(train.numTrain)) for train in trains]
+        form.train.choices = choix_trains
+
         if form.validate_on_submit():
             voyage = Voyage(horaireDepart=form.horaireDepart.data, horaireArrivee=form.horaireArrivee.data,
                             idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data,
@@ -209,10 +217,14 @@ def voyages():
                     db.session.add(billet)
             db.session.commit()
             flash('Nouveau voyage créé', 'info')
+            current_app.logger.info('redirect')
             return redirect(url_for('edit.voyages'))
+        else:
+            current_app.logger.error('Erreur de formulaire')
 
     # lister les voyages
     voyages = Voyage.query.all()
+    current_app.logger.info('render_template')
     return render_template('edit/voyages.html', title='Voyages', voyages=voyages, form=form)
 
 
