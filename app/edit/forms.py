@@ -66,6 +66,8 @@ class AddVoyageForm(FlaskForm):
             raise ValidationError("Le voyage ne peut finir avant qu'il ait commencé !")
         elif self.horaireArrivee.data == horaireDepart.data:
             raise ValidationError("Les horaires de départ et d'arrivée sont les mêmes")
+        elif (self.horaireArrivee.data - horaireDepart.data).days > 0:
+            raise ValidationError("Un voyage ne prend pas plus d'une journée !")
 
     def validate_horaireArrivee(self, horaireArrivee):
         if self.horaireDepart.data >= horaireArrivee.data:

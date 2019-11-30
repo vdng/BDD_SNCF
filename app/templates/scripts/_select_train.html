@@ -1,0 +1,23 @@
+<script type="text/javascript">
+$(document).ready(function($) {
+	$(".horaireArrivee_select").change(function() {
+		var depart = $(".horaireDepart_select").val().replace(/\//g, '-').replace(' ', 'T');
+		console.log(depart);
+		var arrivee = $(".horaireArrivee_select").val().replace(/\//g, '-').replace(' ', 'T');
+		console.log(arrivee);
+		var get_request = $.ajax({
+			type: 'GET',
+			url: 'trains/' + depart + '/' + arrivee,
+		});
+
+		get_request.done(function(data){
+			var option_list = data;
+			$(".train_select").empty();
+			for (var i = 0; i < option_list.length; i++) {
+				$(".train_select").append(
+					$("<option></option>").attr("value", option_list[i][0]).text(option_list[i][1]));
+			}
+		});
+	});
+});
+</script>

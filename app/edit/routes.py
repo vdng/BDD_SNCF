@@ -1,8 +1,10 @@
-from flask import render_template, flash, redirect, url_for, request, current_app
+from flask import render_template, flash, redirect, url_for, request, current_app, make_response
+import json
 from app import db
 from app.edit import bp
 from app.models import *
 from app.edit.forms import *
+from sqlalchemy import or_, and_, not_
 
 
 @bp.route('/')
@@ -40,7 +42,6 @@ def edit_train(numTrain):
     train = Train.query.filter_by(numTrain=numTrain).first_or_404()
     voitures = train.voitures.order_by(Voiture.numVoiture)
     numTotVoitures = voitures.count()
-
 
     voyages = Voyage.query.filter_by(numTrain=numTrain).all()
 
@@ -208,7 +209,8 @@ def voyages():
         if form.validate_on_submit():
             voyage = Voyage(horaireDepart=form.horaireDepart.data, horaireArrivee=form.horaireArrivee.data,
                             idGareDepart=form.gareDepart.data, idGareArrivee=form.gareArrivee.data,
-                            numTrain=form.train.data, prixClasse1=form.prixClasse1.data, prixClasse2=form.prixClasse2.data)
+                            numTrain=form.train.data, prixClasse1=form.prixClasse1.data,
+                            prixClasse2=form.prixClasse2.data)
             db.session.add(voyage)
             train = Train.query.filter_by(numTrain=form.train.data).first()
             for voiture in train.voitures:
@@ -225,7 +227,8 @@ def voyages():
     # lister les voyages
     voyages = Voyage.query.all()
     current_app.logger.info('render_template')
-    return render_template('edit/voyages.html', title='Voyages', voyages=voyages, form=form)
+    return render_template('edit/voyages.html', title='Voyages', voyages=voyages, form=form,
+                           startDate=datetime.utcnow().strftime('%d/%m/%Y %H:%M'))
 
 
 # Visualiser un voyage en particulier, avec les billets
@@ -249,6 +252,25 @@ def delete_voyage(id):
     db.session.commit()
     flash('La voyage {} a bien été supprimé'.format(id), 'success')
     return redirect(url_for('edit.voyages'))
+
+
+# Renvoie tous les trains qui
+@bp.route('/trains/<horaireDepart>/<horaireArrivee>')
+def get_trains_horaires(horaireDepart, horaireArrivee):
+    horaireDepart = datetime.strptime(horaireDepart, '%d-%m-%YT%H:%M')
+    horaireArrivee = datetime.strptime(horaireArrivee, '%d-%m-%YT%H:%M')
+
+    trains = db.session.query(Train).outerjoin(Train.voyages).filter(or_(Voyage.horaireDepart == None, not_(
+        or_(and_(Voyage.horaireDepart < horaireDepart, horaireDepart < Voyage.horaireArrivee),
+            and_(Voyage.horaireDepart < horaireArrivee, horaireArrivee < Voyage.horaireArrivee))
+    ))).all()
+
+    for train in trains:
+        current_app.logger.info(train.voyages)
+    data = [(train.numTrain, 'Train n°{}'.format(train.numTrain)) for train in trains]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
 
 
 # DELETE ALL

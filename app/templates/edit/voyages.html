@@ -23,7 +23,7 @@
         <div class='col-sm-4'>
             <div class='form-group {% if form.horaireDepart.errors %}has-error{% endif %}'>
                 {{ form.horaireDepart.label(class_="control-label") }}
-                {{ form.horaireDepart(class_="form-control datetimepicker") }}
+                {{ form.horaireDepart(class_="form-control horaireDepart_select") }}
                 {% for error in form.horaireDepart.errors %}
                 <span class="help-block">{{ error }}</span>
                 {% endfor %}
@@ -32,7 +32,7 @@
         <div class='col-sm-4'>
             <div class='form-group {% if form.train.errors %}has-error{% endif %}'>
                 {{ form.train.label(class_="control-label") }}
-                {{ form.train(class_="form-control") }}
+                {{ form.train(class_="form-control train_select") }}
                 {% for error in form.train.errors %}
                 <span class="help-block">{{ error }}</span>
                 {% endfor %}
@@ -53,7 +53,7 @@
         <div class='col-sm-4'>
             <div class='form-group {% if form.horaireArrivee.errors %}has-error{% endif %}'>
                 {{ form.horaireArrivee.label(class_="control-label text-error") }}
-                {{ form.horaireArrivee(class_="form-control datetimepicker") }}
+                {{ form.horaireArrivee(class_="form-control horaireArrivee_select") }}
                 {% for error in form.horaireArrivee.errors %}
                 <span class="help-block">{{ error }}</span>
                 {% endfor %}
@@ -138,25 +138,29 @@
         charset="UTF-8"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datetimepicker.fr.js') }}"
         charset="UTF-8"></script>
-<script type="text/javascript">$('.datetimepicker').datetimepicker({
-        language:  'fr',
+<script type="text/javascript">
+$('.horaireDepart_select').datetimepicker({
+        language: 'fr',
         weekStart: 1,
 		autoclose: 1,
 		todayHighlight: 1,
+		startDate: '{{ startDate }}',
 		startView: 2,
 		minuteStep: 10,
 		format: 'dd/mm/yyyy hh:ii'
     });
 
-
-
-
-
-
-
-
+$('.horaireArrivee_select').datetimepicker({
+    language: 'fr',
+	autoclose: 1,
+	startView: 1,
+	minuteStep: 10,
+	format: 'dd/mm/yyyy hh:ii'
+});
 </script>
 {% include "scripts/_select_gare.html" %}
+{% include "scripts/_select_train.html" %}
+{% include "scripts/_select_horaire.html" %}
 {% include "scripts/_clickable_row.html" %}
 {% include "scripts/_data_table.html" %}
 {% endblock %}
