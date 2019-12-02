@@ -14,3 +14,16 @@
 
 
 {% endblock %}
+
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #D26D9E;
+background: -webkit-linear-gradient(top left, #D26D9E, #CBBAEE);
+background: -moz-linear-gradient(top left, #D26D9E, #CBBAEE);
+background: linear-gradient(to bottom right, #D26D9E, #CBBAEE);
+}
+</style>
+{% endblock %}

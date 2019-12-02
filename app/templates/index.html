@@ -52,8 +52,8 @@
                 style="cursor:pointer">
                 <td>{{ voyage.horaireDepart }}</td>
                 <td>{{ voyage.horaireArrivee }}</td>
-                <td>{{ voyage.prixClasse1 * (1 - reduction / 100) }} €</td>
-                <td>{{ voyage.prixClasse2 * (1 - reduction / 100) }} €</td>
+                <td>{{ voyage.prixClasse1 * (1 - reduction / 100) | round }} €</td>
+                <td>{{ voyage.prixClasse2 * (1 - reduction / 100) | round }} €</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -68,5 +68,16 @@
 {% include "scripts/_select_gare.html" %}
 {% include "scripts/_clickable_row.html" %}
 {% include "scripts/_data_table.html" %}
+{% endblock %}
 
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #E79E7F;
+background: -webkit-linear-gradient(top left, #E79E7F, #9EDA6E);
+background: -moz-linear-gradient(top left, #E79E7F, #9EDA6E);
+background: linear-gradient(to bottom right, #E79E7F, #9EDA6E);
+}
+</style>
 {% endblock %}

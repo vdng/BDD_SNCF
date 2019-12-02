@@ -14,7 +14,7 @@
 
 {% block navbar %}
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
     <div class="container">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -40,6 +40,7 @@
 
 {% endblock %}
 
+
 {% block content %}
 <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -62,4 +63,5 @@
     {# application content needs to be provided in the app_content block #}
     {% block app_content %}{% endblock %}
 </div>
+
 {% endblock %}

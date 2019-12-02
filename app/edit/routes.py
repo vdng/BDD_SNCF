@@ -32,8 +32,20 @@ def trains():
         db.session.commit()
         flash('Nouveau train créé', 'info')
         return redirect(url_for('edit.trains'))
-    trains = Train.query.all()
-    return render_template('edit/trains.html', title='Trains', trains=trains, form=form)
+
+    trains_capacite = db.session.query(Train.numTrain, db.func.count(Place.id).label("capacite")
+                                       ).join(Voiture, Train.numTrain == Voiture.numTrain
+                                              ).join(Place, Voiture.id == Place.idVoiture
+                                                     ).group_by(Train.numTrain).cte(name="trains_capacite")
+
+    trains = db.session.query(trains_capacite.c.numTrain, trains_capacite.c.capacite,
+                              db.func.count(Voiture.id).label("nbVoitures"), db.func.count(Voiture.classe1==True).label("nbClasse1")
+                              ).join(Voiture, trains_capacite.c.numTrain == Voiture.numTrain
+                                     ).group_by(trains_capacite.c.numTrain)
+
+    current_app.logger.info(trains)
+
+    return render_template('edit/trains.html', title='Trains', trains=trains.all(), form=form)
 
 
 # Visualiser un train en particulier, possibilité de rajouter et supprimer des voitures

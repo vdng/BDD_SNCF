@@ -45,3 +45,15 @@
 {{super()}}
 {% include "scripts/_data_table.html" %}
 {% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #EE8635;
+background: -webkit-linear-gradient(top left, #EE8635, #BFA74E);
+background: -moz-linear-gradient(top left, #EE8635, #BFA74E);
+background: linear-gradient(to bottom right, #EE8635, #BFA74E);
+}
+</style>
+{% endblock %}

@@ -5,21 +5,42 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-1"></div>
+
         <div class="col-sm-2 text-center">
-            <h3><a href="{{ url_for('edit.gares') }}">Gares</a></h3>
+            <a href="{{ url_for('edit.gares') }}" id="gares">
+                <i class="fas fa-building"></i>
+                <h3>Gares</h3>
+            </a>
         </div>
+
         <div class="col-sm-2 text-center">
-            <h3><a href="{{ url_for('edit.trains') }}">Trains</a></h3>
+            <a href="{{ url_for('edit.trains') }}" id="trains">
+                <i class="fa fa-train"></i>
+                <h3>Trains</h3>
+            </a>
         </div>
+
         <div class="col-sm-2 text-center">
-            <h3><a href="{{ url_for('edit.voyages') }}">Voyages</a></h3>
+            <a href="{{ url_for('edit.voyages') }}" id="voyages">
+                <i class="fas fa-passport"></i>
+                <h3>Voyages</h3>
+            </a>
         </div>
+
         <div class="col-sm-2 text-center">
-            <h3><a href="{{ url_for('edit.clients') }}">Clients</a></h3>
+            <a href="{{ url_for('edit.clients') }}" id="clients">
+                <i class="fas fa-user-alt"></i>
+                <h3>Clients</h3>
+            </a>
         </div>
+
         <div class="col-sm-2 text-center">
-            <h3><a href="{{ url_for('edit.reductions') }}">Reductions</a></h3>
+            <a href="{{ url_for('edit.reductions') }}" id="reductions">
+                <i class="fa fa-tags"></i>
+                <h3>Reductions</h3>
+            </a>
         </div>
+
         <div class="col-sm-1"></div>
     </div>
 
@@ -30,5 +51,63 @@
     </h3>
 </div>
 
+
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+i {
+font-size: 5em;
+}
+
+#gares {
+color: #4298B5;
+}
+
+#gares:hover {
+color: #33748a;
+}
+
+#trains {
+color: #ADC4CC;
+}
+
+#trains:hover {
+color: #899ba1;
+}
+
+#voyages {
+color: #92B06A;
+}
+
+#voyages:hover {
+color: #6f8550;
+}
+
+#clients {
+color: #E19D29;
+}
+
+#clients:hover {
+color: #b67f21;
+}
+
+#reductions {
+color: #DD5F32;
+}
+
+#reductions:hover {
+color: #b34d28;
+}
+
+.jumbotron {
+background: #FFB9D3;
+background: -webkit-linear-gradient(top left, #FFB9D3, #EBFE8D);
+background: -moz-linear-gradient(top left, #FFB9D3, #EBFE8D);
+background: linear-gradient(to bottom right, #FFB9D3, #EBFE8D);
+}
+
+</style>
 
 {% endblock %}

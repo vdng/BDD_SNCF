@@ -15,8 +15,9 @@
         <table class="table table-hover data-table">
             <thead>
             <tr>
-                <th>#</th>
+                <th>Train n°</th>
                 <th>Nombre de voitures</th>
+                <th>Nombre de voitures 1ere classe</th>
                 <th>Capacité totale</th>
                 <th></th>
             </tr>
@@ -26,8 +27,9 @@
             <tr class="clickable-row" data-href="{{ url_for('edit.edit_train', numTrain=train.numTrain) }}"
                 style="cursor:pointer">
                 <td>{{ train.numTrain }}</td>
-                <td>{{ train.voitures.count() }}</td>
-                <td>{{ train }}</td>
+                <td>{{ train.nbVoitures }}</td>
+                <td>{{ train.nbClasse1 }}</td>
+                <td>{{ train.capacite }}</td>
                 <td>
                     <a href="{{ url_for('edit.delete_train', numTrain=train.numTrain) }}" class="btn btn-danger btn-sm">
                         <span class="fas fa-trash"></span> Delete
@@ -46,4 +48,16 @@
 {{super()}}
 {% include "scripts/_clickable_row.html" %}
 {% include "scripts/_data_table.html" %}
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #C5D4D2;
+background: -webkit-linear-gradient(top left, #C5D4D2, #7A9AC8);
+background: -moz-linear-gradient(top left, #C5D4D2, #7A9AC8);
+background: linear-gradient(to bottom right, #C5D4D2, #7A9AC8);
+}
+</style>
 {% endblock %}

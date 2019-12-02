@@ -79,3 +79,15 @@
     </table>
 </div>
 {% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #E995AE;
+background: -webkit-linear-gradient(top left, #E995AE, #87A9C5);
+background: -moz-linear-gradient(top left, #E995AE, #87A9C5);
+background: linear-gradient(to bottom right, #E995AE, #87A9C5);
+}
+</style>
+{% endblock %}
