@@ -146,7 +146,7 @@ $('.horaireDepart_select').datetimepicker({
 		todayHighlight: 1,
 		startDate: '{{ startDate }}',
 		startView: 2,
-		minuteStep: 10,
+		minuteStep: 5,
 		format: 'dd/mm/yyyy hh:ii'
     });
 
@@ -154,7 +154,8 @@ $('.horaireArrivee_select').datetimepicker({
     language: 'fr',
 	autoclose: 1,
 	startView: 1,
-	minuteStep: 10,
+	startDate: '{{ startDate }}',
+    minuteStep: 5,
 	format: 'dd/mm/yyyy hh:ii'
 });
 </script>
