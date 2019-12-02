@@ -260,14 +260,22 @@ def get_trains_horaires(horaireDepart, horaireArrivee):
     horaireDepart = datetime.strptime(horaireDepart, '%d-%m-%YT%H:%M')
     horaireArrivee = datetime.strptime(horaireArrivee, '%d-%m-%YT%H:%M')
 
-    trains = db.session.query(Train).outerjoin(Train.voyages).filter(or_(Voyage.horaireDepart == None, not_(
-        or_(and_(Voyage.horaireDepart < horaireDepart, horaireDepart < Voyage.horaireArrivee),
-            and_(Voyage.horaireDepart < horaireArrivee, horaireArrivee < Voyage.horaireArrivee))
-    ))).all()
+    trains_occupes = db.session.query(Train.numTrain, Voyage.horaireDepart).outerjoin(Voyage) \
+        .filter(or_(and_(Voyage.horaireDepart < horaireDepart, horaireDepart < Voyage.horaireArrivee),
+                    and_(Voyage.horaireDepart < horaireArrivee, horaireArrivee < Voyage.horaireArrivee),
+                    and_(Voyage.horaireDepart < horaireDepart, horaireArrivee < Voyage.horaireArrivee),
+                    and_(horaireDepart < Voyage.horaireDepart, Voyage.horaireArrivee < horaireArrivee))
+                ).cte(name="trains_occupes")
 
-    for train in trains:
-        current_app.logger.info(train.voyages)
-    data = [(train.numTrain, 'Train n°{}'.format(train.numTrain)) for train in trains]
+    trains_libres = db.session.query(Train).outerjoin(trains_occupes,
+                                                      Train.numTrain == trains_occupes.c.numTrain).filter(
+        trains_occupes.c.horaireDepart == None
+    )
+
+    current_app.logger.info(trains_libres)
+    current_app.logger.info(trains_libres.all())
+
+    data = [(train.numTrain, 'Train n°{}'.format(train.numTrain)) for train in trains_libres]
     response = make_response(json.dumps(data))
     response.content_type = 'application/json'
     return response
