@@ -39,7 +39,8 @@ def trains():
                                                      ).group_by(Train.numTrain).cte(name="trains_capacite")
 
     trains = db.session.query(trains_capacite.c.numTrain, trains_capacite.c.capacite,
-                              db.func.count(Voiture.id).label("nbVoitures"), db.func.count(Voiture.classe1==True).label("nbClasse1")
+                              db.func.count(Voiture.id).label("nbVoitures"),
+                              db.func.count(Voiture.classe1 == True).label("nbClasse1")
                               ).join(Voiture, trains_capacite.c.numTrain == Voiture.numTrain
                                      ).group_by(trains_capacite.c.numTrain)
 
@@ -74,8 +75,6 @@ def edit_train(numTrain):
         db.session.commit()
         flash('Voiture ajoutée', 'info')
         return redirect(url_for('edit.edit_train', numTrain=numTrain))
-    else:
-        flash('Veuillez correctement remplir le formulaire')
 
     voitures = train.voitures.order_by(Voiture.numVoiture)
     return render_template('edit/train.html', title='Edit Train', jumbotron_title='Train n°{}'.format(train.numTrain),
@@ -247,10 +246,11 @@ def voyages():
 @bp.route('/voyages/<id>')
 def edit_voyage(id):
     voyage = Voyage.query.filter_by(id=id).first_or_404()
+    gareDepart = Gare.query.filter_by(id=voyage.idGareDepart).first()
+    gareArrivee = Gare.query.filter_by(id=voyage.idGareArrivee).first()
     billets = voyage.billets.all()
-    return render_template('edit/voyage.html', title='Edit Voyage', billets=billets,
-                           jumbotron_title='{} {} -> {} {}'.format(voyage.gareDepart.ville, voyage.gareDepart.nom,
-                                                                   voyage.gareArrivee.ville, voyage.gareArrivee.nom))
+    return render_template('edit/voyage.html', title='Edit Voyage', billets=billets, gareDepart=gareDepart,
+                           gareArrivee=gareArrivee, jumbotron_title=f'Voyage n°{voyage.id}', voyage=voyage)
 
 
 # Supprimer un voyage

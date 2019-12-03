@@ -5,14 +5,12 @@
 
 
 <div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4">
+    <div class="col-sm-2">
+        <h3>Ajouter une réduction</h3>
         {{ wtf.quick_form(form) }}
     </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-10">
+        <h2>Liste des réductions</h2>
         <table class="table table-hover data-table">
             <thead>
             <tr>
@@ -42,8 +40,6 @@
         </table>
     </div>
 </div>
-
-
 {% endblock %}
 
 {% block scripts %}

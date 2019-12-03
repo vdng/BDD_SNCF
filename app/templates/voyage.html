@@ -2,37 +2,90 @@
 
 {% block app_content %}
 
-<form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div class='row'>
-        <div class='col-sm-3'>
-            <div class='form-group'>
-                {{ form.classe.label(class_="control_label") }}
-                {{ form.classe(class_="form-control classe_select") }}
+<div class="row">
+    <div class="col-sm-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3>Détails du trajet</h3>
+            </div>
+            <div class="panel-body">
+                <h4>{{ gareDepart.ville }} - {{ gareDepart.nom }}</h4>
+                <h5>{{ voyage.horaireDepart.strftime('%a %d/%m/%Y %H:%M') }}</h5>
+                Vers
+                <h4>{{ gareArrivee.ville }} - {{ gareArrivee.nom }}</h4>
+                <h5>{{ voyage.horaireArrivee.strftime('%a %d/%m/%Y %H:%M') }}</h5>
             </div>
         </div>
-        <div class='col-sm-3'>
-            <div class='form-group'>
-                {{ form.voiture.label(class_="control_label") }}
-                {{ form.voiture(class_="form-control voiture_select") }}
-            </div>
-        </div>
-        <div class='col-sm-3'>
-            <div class='form-group'>
-                {{ form.place.label(class_="control_label") }}
-                {{ form.place(class_="form-control place_select") }}
-            </div>
-        </div>
-        <div class='col-sm-3'>
-            <div class='form-group'>
-                {{ form.submit(class_="btn btn-default") }}
-            </div>
-        </div>
+    </div>
+    <div class="col-sm-1"></div>
 
+
+    <div class="col-sm-3">
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.classe.label(class_="control_label") }}
+                        {{ form.classe(class_="form-control classe_select") }}
+                    </div>
+                </div>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.voiture.label(class_="control_label") }}
+                        {{ form.voiture(class_="form-control voiture_select") }}
+                    </div>
+                </div>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.place.label(class_="control_label") }}
+                        {{ form.place(class_="form-control place_select") }}
+                    </div>
+                </div>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.submit(class_="btn btn-default") }}
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    <div class="col-sm-1"></div>
+
+    <div class="col-sm-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3>Tarifs</h3>
+            </div>
+            <div class="panel-body">
+                <h4>1ere classe</h4>
+                <h5>{{ voyage.prixClasse1 }} €</h5>
+                <br>
+                <h4>2nde classe</h4>
+                <h5>{{ voyage.prixClasse2 }} €</h5>
+            </div>
+        </div>
     </div>
 
-</form>
 
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #70F28A;
+background: -webkit-linear-gradient(top left, #70F28A, #286A95);
+background: -moz-linear-gradient(top left, #70F28A, #286A95);
+background: linear-gradient(to bottom right, #70F28A, #286A95);
+}
+</style>
 {% endblock %}
 
 

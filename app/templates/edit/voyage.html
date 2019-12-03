@@ -4,8 +4,42 @@
 {% block app_content %}
 
 <div class="row">
-    <div class="col-sm-12">
-        <table class="table">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3>Détails du trajet</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4>{{ gareDepart.ville }} - {{ gareDepart.nom }}</h4>
+                        <h5>{{ voyage.horaireDepart.strftime('%a %d/%m/%Y %H:%M') }}</h5>
+                        Vers
+                        <h4>{{ gareArrivee.ville }} - {{ gareArrivee.nom }}</h4>
+                        <h5>{{ voyage.horaireArrivee.strftime('%a %d/%m/%Y %H:%M') }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3>Tarifs</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4>1ere classe</h4>
+                        <h5>{{ voyage.prixClasse1 }} €</h5>
+                        <br>
+                        <h4>2nde classe</h4>
+                        <h5>{{ voyage.prixClasse2 }} €</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-9">
+        <table class="table data-table">
             <thead>
             <tr>
                 <th>Billet id</th>
@@ -36,4 +70,21 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #5757BA;
+background: -webkit-linear-gradient(top left, #5757BA, #C698B3);
+background: -moz-linear-gradient(top left, #5757BA, #C698B3);
+background: linear-gradient(to bottom right, #5757BA, #C698B3);
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{% include "scripts/_data_table.html" %}
 {% endblock %}

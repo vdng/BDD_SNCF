@@ -4,6 +4,7 @@
 {% block app_content %}
 
 <div class="container">
+    <h2>Mon compte client</h2>
     <div class="row">
         <div class="col-sm-4">
             <div class="panel panel-primary">
@@ -53,21 +54,27 @@
 </div>
 
 <div class="container">
+
+    <h2>Mes billets</h2>
+
     <table class="table table-hover data-table">
         <thead>
         <tr>
-            <th>Billet id</th>
-            <th>idVoyage</th>
-            <th>idPlace</th>
+            <th>Gare de départ</th>
+            <th>Gare d'arrivée</th>
+            <th>Horaire de départ</th>
+            <th>Horaire d'arrivée</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        {% for billet in current_user.billets %}
-        <tr>
-            <td>{{ billet.id }}</td>
-            <td>{{ billet.idVoyage }}</td>
-            <td>{{ billet.idPlace }}</td>
+        {% for voyage in voyages %}
+        <tr class="clickable-row" data-href="{{ url_for('edit.edit_voyage', id=voyage.id) }}"
+            style="cursor:pointer">
+            <td>{{ voyage.gareDepart.ville }} - {{ voyage.gareDepart.nom }}</td>
+            <td>{{ voyage.gareArrivee.ville }} - {{ voyage.gareArrivee.nom }}</td>
+            <td>{{ voyage.horaireDepart.strftime('%a %d/%m/%Y %H:%M') }}</td>
+            <td>{{ voyage.horaireArrivee.strftime('%a %d/%m/%Y %H:%M') }}</td>
             <td>
                 <a href="#" class="btn btn-danger btn-sm">
                     <span class="fas fa-trash"></span> Delete
@@ -89,5 +96,6 @@ background: -webkit-linear-gradient(top left, #E995AE, #87A9C5);
 background: -moz-linear-gradient(top left, #E995AE, #87A9C5);
 background: linear-gradient(to bottom right, #E995AE, #87A9C5);
 }
+
 </style>
 {% endblock %}

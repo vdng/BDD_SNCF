@@ -16,6 +16,7 @@ background: linear-gradient(to bottom right, #6ACF6D, #BFBE4E);
 
 {% block app_content %}
 
+<h3>Ajouter un voyage</h3>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <div class='row'>
@@ -98,6 +99,7 @@ background: linear-gradient(to bottom right, #6ACF6D, #BFBE4E);
 
 </form>
 
+<h2>Liste des voyages</h2>
 <div class="row">
     <div class="col-sm-12">
         <table class="table table-hover data-table">
@@ -121,8 +123,8 @@ background: linear-gradient(to bottom right, #6ACF6D, #BFBE4E);
                 <td>{{ voyage.id }}</td>
                 <td>{{ voyage.gareDepart.ville }} - {{ voyage.gareDepart.nom }}</td>
                 <td>{{ voyage.gareArrivee.ville }} - {{ voyage.gareArrivee.nom }}</td>
-                <td>{{ voyage.horaireDepart }}</td>
-                <td>{{ voyage.horaireArrivee }}</td>
+                <td>{{ voyage.horaireDepart.strftime('%a %d/%m/%Y %H:%M') }}</td>
+                <td>{{ voyage.horaireArrivee.strftime('%a %d/%m/%Y %H:%M') }}</td>
                 <td>{{ voyage.numTrain }}</td>
                 <td>{{ voyage.prixClasse1 }} €</td>
                 <td>{{ voyage.prixClasse2 }} €</td>

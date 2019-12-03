@@ -3,40 +3,45 @@
 
 {% block app_content %}
 
-<form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div class='row'>
-        <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.gareDepart.label(class_="control_label") }}
-                {{ form.gareDepart(class_="form-control gareDepart_select") }}
-            </div>
-        </div>
-    </div>
-
-    <div class='row'>
-        <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.gareArrivee.label(class_="control_label") }}
-                {{ form.gareArrivee(class_="form-control gareArrivee_select") }}
-            </div>
-        </div>
-    </div>
-
-    <div class='row'>
-        <div class='col-sm-4'>
-            <div class='form-group'>
-                {{ form.submit(class_="btn btn-default") }}
-            </div>
-        </div>
-    </div>
-
-</form>
-
-{% if voyages %}
-
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-3">
+        <h3>Rechercher un voyage</h3>
+
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.gareDepart.label(class_="control_label") }}
+                        {{ form.gareDepart(class_="form-control gareDepart_select") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.gareArrivee.label(class_="control_label") }}
+                        {{ form.gareArrivee(class_="form-control gareArrivee_select") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <div class='form-group'>
+                        {{ form.submit(class_="btn btn-default") }}
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    {% if voyages %}
+
+    <div class="col-sm-9">
+        <h2>Résultats</h2>
         <table class="table table-hover data-table">
             <thead>
             <tr>
@@ -59,8 +64,9 @@
             </tbody>
         </table>
     </div>
+    {% endif %}
 </div>
-{% endif %}
+
 {% endblock %}
 
 {% block scripts %}
@@ -79,5 +85,7 @@ background: -webkit-linear-gradient(top left, #E79E7F, #9EDA6E);
 background: -moz-linear-gradient(top left, #E79E7F, #9EDA6E);
 background: linear-gradient(to bottom right, #E79E7F, #9EDA6E);
 }
+
+
 </style>
 {% endblock %}

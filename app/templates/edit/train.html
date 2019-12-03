@@ -4,14 +4,12 @@
 {% block app_content %}
 
 <dir class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4">
+    <div class="col-sm-2">
+        <h3>Ajouter une voiture</h3>
         {{ wtf.quick_form(form) }}
     </div>
-</dir>
-
-<div class="row">
-    <div class="col-sml-12">
+    <div class="col-sm-10">
+        <h2>Liste des voitures</h2>
         <table class="table data-table">
             <thead>
             <tr>
@@ -44,11 +42,23 @@
             </tbody>
         </table>
     </div>
-</div>
+</dir>
 
 {% endblock %}
 
 {% block scripts %}
 {{super()}}
 {% include "scripts/_data_table.html" %}
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #5930F3;
+background: -webkit-linear-gradient(top left, #5930F3, #5EEA86);
+background: -moz-linear-gradient(top left, #5930F3, #5EEA86);
+background: linear-gradient(to bottom right, #5930F3, #5EEA86);
+}
+</style>
 {% endblock %}

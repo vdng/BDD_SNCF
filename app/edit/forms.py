@@ -87,7 +87,7 @@ class AddReductionForm(FlaskForm):
     type = StringField("Type réduction", validators=[DataRequired(message="Il faut un type de réduction")])
     pourcentage = IntegerField("%", validators=[DataRequired(message="Le pourcentage doit être un nombre")])
     prix = IntegerField("Coût", validators=[DataRequired(message="Le prix doit être un nombre")])
-    submit = SubmitField("Ajouter une carte de réduction")
+    submit = SubmitField("Ajouter")
 
     def validate_pourcentage(self, pourcentage):
         if not 0 < pourcentage.data < 100:

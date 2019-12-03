@@ -41,10 +41,12 @@ def gares_get_all_butt(gareId):
     return response
 
 
-# Visualiser un voyage en particulier, avec les billets
+# Visualiser un voyage en particulier et effectuer une réservation
 @bp.route('/voyages/<voyageId>', methods=['GET', 'POST'])
 def voyage(voyageId):
     voyage = Voyage.query.filter_by(id=voyageId).first_or_404()
+    gareDepart = Gare.query.filter_by(id=voyage.idGareDepart).first()
+    gareArrivee = Gare.query.filter_by(id=voyage.idGareArrivee).first()
 
     train = Train.query.filter_by(numTrain=voyage.numTrain).first()
 
@@ -77,7 +79,8 @@ def voyage(voyageId):
             db.session.commit()
             flash('Vous venez d\'acheter un billet de train', 'success')
             return redirect(url_for('main.index'))
-    return render_template('voyage.html', title='Voyage', jumbotron_title='Réserver', form=form, train=train)
+    return render_template('voyage.html', title='Voyage', jumbotron_title='Réserver', form=form, voyage=voyage,
+                           gareDepart=gareDepart, gareArrivee=gareArrivee, train=train)
 
 
 @bp.route('/trains/<numTrain>/classe1')
@@ -142,7 +145,7 @@ def moncompte():
 
     reduction = Reduction.query.filter_by(id=current_user.idReduction).first()
 
-    voyages = Voyage.query.all()
+    voyages = db.session.query(Voyage).join(Billet).filter(Billet.idClient==current_user.id).distinct().all()
     return render_template('moncompte.html', title='Mon compte', voyages=voyages, form_reduction=form_reduction,
                            form_portefeuille=form_portefeuille, reduction=reduction,
                            jumbotron_title='{}'.format(current_user.pseudo))
