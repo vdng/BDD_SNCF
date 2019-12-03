@@ -13,6 +13,7 @@ def create_admin():
         flash('Un admin existe déjà !', 'info')
     else:
         admin = Client(pseudo='admin', nom='admin', prenom='admin', age=99, argent=0, admin=True)
+        admin.set_password('admin')
         db.session.add(admin)
         db.session.commit()
         flash('Vous venez de créer un admin !', 'success')
