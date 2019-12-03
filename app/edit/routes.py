@@ -38,13 +38,15 @@ def trains():
                                               ).join(Place, Voiture.id == Place.idVoiture
                                                      ).group_by(Train.numTrain).cte(name="trains_capacite")
 
-    trains = db.session.query(trains_capacite.c.numTrain, trains_capacite.c.capacite,
-                              db.func.count(Voiture.id).label("nbVoitures"),
-                              db.func.count(Voiture.classe1 == True).label("nbClasse1")
+    trains_nbVoitures = db.session.query(trains_capacite.c.numTrain, trains_capacite.c.capacite,
+                              db.func.count(Voiture.id).label("nbVoitures")
                               ).join(Voiture, trains_capacite.c.numTrain == Voiture.numTrain
-                                     ).group_by(trains_capacite.c.numTrain)
+                                     ).group_by(trains_capacite.c.numTrain).cte(name="trains_nbVoitures")
 
-    current_app.logger.info(trains)
+    trains = db.session.query(trains_nbVoitures.c.numTrain, trains_nbVoitures.c.capacite, trains_nbVoitures.c.nbVoitures,
+                              db.func.count(Voiture.id).label("nbClasse1")
+                              ).outerjoin(Voiture, trains_nbVoitures.c.numTrain == Voiture.numTrain
+                                     ).filter(Voiture.classe1==True).group_by(trains_nbVoitures.c.numTrain)
 
     return render_template('edit/trains.html', title='Trains', trains=trains.all(), form=form)
 
@@ -200,9 +202,6 @@ def voyages():
     # ajouter un voyage
     form = AddVoyageForm()
 
-    form.prixClasse1.data = randint(50, 100)
-    form.prixClasse2.data = randint(20, form.prixClasse1.data)
-
     form.train.choices = []
 
     gares = Gare.query.all()
@@ -234,6 +233,10 @@ def voyages():
             return redirect(url_for('edit.voyages'))
         else:
             current_app.logger.error('Erreur de formulaire')
+
+    else:
+        form.prixClasse1.data = randint(50, 100)
+        form.prixClasse2.data = randint(20, form.prixClasse1.data)
 
     # lister les voyages
     voyages = Voyage.query.all()
