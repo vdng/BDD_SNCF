@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3>Administrateur</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Un compte administrateur (admin admin) permet d'éditer la base de donnée.
+                </p>
+            </div>
+            <div class="panel-footer">
+                <a type="button" class="btn btn-info" href="{{ url_for('main.create_admin') }}">
+                    Créer un compte administrateur
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3>Client</h3>
+            </div>
+            <div class="panel-body">
+                Créez votre compte client et voyagez partout !
+            </div>
+            <div class="panel-footer">
+                <a type="button" class="btn btn-info" href="{{ url_for('auth.register') }}">
+                    Créer un compte client
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+.jumbotron {
+background: #F9EFF3;
+background: -webkit-linear-gradient(top left, #F9EFF3, #E97779);
+background: -moz-linear-gradient(top left, #F9EFF3, #E97779);
+background: linear-gradient(to bottom right, #F9EFF3, #E97779);
+}
+
+
+
+
+
+
+
+
+
+
+
+</style>
+{% endblock %}
+

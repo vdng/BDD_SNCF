@@ -18,11 +18,14 @@
     <div class="container">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                {% if current_user.is_anonymous %}
+                <li><a href="{{ url_for('main.home') }}">Accueil</a></li>
+                {% endif %}
                 {% if current_user.admin %}
                 <li><a href="{{ url_for('edit.edit_index') }}"><span
                         class="fas fa-pen"></span></a></li>
                 {% else %}
-                <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('main.index') }}">Rechercher</a></li>
                 <li><a href="{{ url_for('main.moncompte') }}">Mon profil</a></li>
                 {% endif %}
             </ul>

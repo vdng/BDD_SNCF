@@ -18,7 +18,15 @@ def create_admin():
         flash('Vous venez de créer un admin !', 'success')
     return redirect(url_for('edit.edit_index'))
 
+
 @bp.route('/', methods=['GET', 'POST'])
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    return render_template('home.html', title='Bienvenue dans notre agence')
+
+
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
@@ -126,6 +134,7 @@ def get_voitures_classe2(numTrain):
     response.content_type = 'application/json'
     return response
 
+
 @bp.route('/voitures/<voitureId>/places')
 def get_places(voitureId):
     if current_user.admin:
@@ -175,7 +184,7 @@ def moncompte():
 
     reduction = Reduction.query.filter_by(id=current_user.idReduction).first()
 
-    voyages = db.session.query(Voyage).join(Billet).filter(Billet.idClient==current_user.id).distinct().all()
+    voyages = db.session.query(Voyage).join(Billet).filter(Billet.idClient == current_user.id).distinct().all()
     return render_template('moncompte.html', title='Mon compte', voyages=voyages, form_reduction=form_reduction,
                            form_portefeuille=form_portefeuille, reduction=reduction,
                            jumbotron_title='{}'.format(current_user.pseudo))

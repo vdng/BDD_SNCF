@@ -2,21 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc3c56af-50ab-45e9-ac6a-351ad4f8810e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/auth/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/auth/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/edit/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/edit/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/auth/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/auth/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/clients.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/edit_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/edit_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/gares.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/gares.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/reductions.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/reductions.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/train.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/train.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/trains.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/trains.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/voyage.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/voyage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/edit/voyages.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/voyages.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/moncompte.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/moncompte.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
