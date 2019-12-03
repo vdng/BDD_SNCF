@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc3c56af-50ab-45e9-ac6a-351ad4f8810e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,16 +30,16 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates\edit" />
+      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\main" />
+      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\static" />
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates\scripts" />
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\main" />
       <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\templates\edit" />
-      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app\main" />
-      <recent name="C:\Users\duong\PycharmProjects\BDD_SNCF\app" />
     </key>
   </component>
   <component name="RunDashboard">
