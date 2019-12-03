@@ -15,6 +15,7 @@ class Client(UserMixin, db.Model):
     nom = db.Column(db.String(64))
     prenom = db.Column(db.String(64))
     age = db.Column(db.Integer)
+    admin = db.Column(db.Boolean, default=False)
 
     argent = db.Column(db.Float, default=200)
 

@@ -16,6 +16,7 @@
         <table class="table table-hover data-table">
             <thead>
             <tr>
+                <th>id</th>
                 <th>Ville</th>
                 <th>Nom</th>
                 <th></th>
@@ -24,12 +25,13 @@
             <tbody>
             {% for gare in gares %}
             <tr>
+                <td>{{ gare.id }}</td>
                 <td>{{ gare.ville }}</td>
                 <td>{{ gare.nom }}</td>
                 <td>
                     <a href="{{ url_for('edit.delete_gare', ville=gare.ville, nom=gare.nom) }}"
                        class="btn btn-danger btn-sm">
-                        <span class="fas fa-trash"></span> Delete
+                        <span class="fas fa-trash"></span> Supprimer
                     </a>
                 </td>
             </tr>

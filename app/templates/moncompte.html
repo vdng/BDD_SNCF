@@ -77,7 +77,7 @@
             <td>{{ voyage.horaireArrivee.strftime('%a %d/%m/%Y %H:%M') }}</td>
             <td>
                 <a href="#" class="btn btn-danger btn-sm">
-                    <span class="fas fa-trash"></span> Delete
+                    <span class="fas fa-trash"></span> Supprimer
                 </a>
             </td>
         </tr>
@@ -98,4 +98,9 @@ background: linear-gradient(to bottom right, #E995AE, #87A9C5);
 }
 
 </style>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{% include "scripts/_data_table.html" %}
 {% endblock %}

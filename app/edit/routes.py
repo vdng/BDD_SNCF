@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request, current_app, make_response
+from flask_login import current_user, login_required
 import json
 from app import db
 from app.edit import bp
@@ -8,8 +9,11 @@ from sqlalchemy import or_, and_, not_
 
 
 @bp.route('/')
+@login_required
 def edit_index():
-    return render_template('edit/edit_index.html', title='Edit')
+    if current_user.admin:
+        return render_template('edit/edit_index.html', title='Page administrateur')
+    return redirect(url_for('main.index'))
 
 
 # TRAINS
@@ -17,7 +21,11 @@ def edit_index():
 
 # Lister tous les trains, et possibilité de rajouter ou supprimer des trains
 @bp.route('/trains', methods=['GET', 'POST'])
+@login_required
 def trains():
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     form = AddTrainForm()
     if form.validate_on_submit():
         train = Train()
@@ -30,7 +38,10 @@ def trains():
                 db.session.add(place)
             db.session.add(voiture)
         db.session.commit()
-        flash('Nouveau train créé', 'info')
+        flash('Nouveau train créé', 'success')
+        flash(f'Train n°{train.numTrain}, avec {form.nbVoitures.data} voitures '
+              f'(nb 1ere classe : {form.nbVoituresClasse1.data}), '
+              f'{form.nbPlacesParVoiture.data} places par voiture', 'info')
         return redirect(url_for('edit.trains'))
 
     trains_capacite = db.session.query(Train.numTrain, db.func.count(Place.id).label("capacite")
@@ -39,21 +50,26 @@ def trains():
                                                      ).group_by(Train.numTrain).cte(name="trains_capacite")
 
     trains_nbVoitures = db.session.query(trains_capacite.c.numTrain, trains_capacite.c.capacite,
-                              db.func.count(Voiture.id).label("nbVoitures")
-                              ).join(Voiture, trains_capacite.c.numTrain == Voiture.numTrain
-                                     ).group_by(trains_capacite.c.numTrain).cte(name="trains_nbVoitures")
+                                         db.func.count(Voiture.id).label("nbVoitures")
+                                         ).join(Voiture, trains_capacite.c.numTrain == Voiture.numTrain
+                                                ).group_by(trains_capacite.c.numTrain).cte(name="trains_nbVoitures")
 
-    trains = db.session.query(trains_nbVoitures.c.numTrain, trains_nbVoitures.c.capacite, trains_nbVoitures.c.nbVoitures,
+    trains = db.session.query(trains_nbVoitures.c.numTrain, trains_nbVoitures.c.capacite,
+                              trains_nbVoitures.c.nbVoitures,
                               db.func.count(Voiture.id).label("nbClasse1")
                               ).outerjoin(Voiture, trains_nbVoitures.c.numTrain == Voiture.numTrain
-                                     ).filter(Voiture.classe1==True).group_by(trains_nbVoitures.c.numTrain)
+                                          ).filter(Voiture.classe1 == True).group_by(trains_nbVoitures.c.numTrain)
 
     return render_template('edit/trains.html', title='Trains', trains=trains.all(), form=form)
 
 
 # Visualiser un train en particulier, possibilité de rajouter et supprimer des voitures
 @bp.route('/trains/<numTrain>', methods=['GET', 'POST'])
+@login_required
 def edit_train(numTrain):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     train = Train.query.filter_by(numTrain=numTrain).first_or_404()
     voitures = train.voitures.order_by(Voiture.numVoiture)
     numTotVoitures = voitures.count()
@@ -75,7 +91,8 @@ def edit_train(numTrain):
                 billet = Billet(voyage=voyage, place=place)
                 db.session.add(billet)
         db.session.commit()
-        flash('Voiture ajoutée', 'info')
+        flash('Voiture ajoutée', 'success')
+        flash(f'Voiture id: {voiture.id}, capacité: {form.capacite.data}, 1re classe: {form.classe1.data}', 'info')
         return redirect(url_for('edit.edit_train', numTrain=numTrain))
 
     voitures = train.voitures.order_by(Voiture.numVoiture)
@@ -85,7 +102,11 @@ def edit_train(numTrain):
 
 # Supprimer un train
 @bp.route('/trains/delete/<numTrain>')
+@login_required
 def delete_train(numTrain):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     train = Train.query.filter_by(numTrain=numTrain).first()
     if train is None:
         flash('Le train n°{} n\'existe pas.'.format(numTrain), 'danger')
@@ -98,7 +119,11 @@ def delete_train(numTrain):
 
 # Supprimer une voiture
 @bp.route('/trains/<numTrain>/delete/<idVoiture>')
+@login_required
 def delete_voiture(numTrain, idVoiture):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     voiture = Voiture.query.filter_by(id=idVoiture).first()
     if voiture is None:
         flash('La voiture d\'id {} n\'existe pas.'.format(idVoiture), 'danger')
@@ -114,13 +139,18 @@ def delete_voiture(numTrain, idVoiture):
 
 # Lister toutes les gares, et possibilité de rajouter ou supprimer des gare
 @bp.route('/gares', methods=['GET', 'POST'])
+@login_required
 def gares():
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     form = AddGareForm()
     if form.validate_on_submit():
         gare = Gare(nom=form.nom.data, ville=form.ville.data)
         db.session.add(gare)
         db.session.commit()
-        flash('Nouvelle gare créée', 'info')
+        flash('Nouvelle gare créée', 'success')
+        flash(f'id: {gare.id}, {form.ville.data} - {form.nom.data}', 'info')
         return redirect(url_for('edit.gares'))
     gares = Gare.query.all()
     return render_template('edit/gares.html', title='Gares', gares=gares, form=form)
@@ -128,7 +158,11 @@ def gares():
 
 # Supprimer une gare
 @bp.route('/gares/delete/<ville>/<nom>')
+@login_required
 def delete_gare(ville, nom):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     gare = Gare.query.filter_by(ville=ville, nom=nom).first()
     if gare is None:
         flash('La gare {} à {} n\'existe pas.'.format(nom, ville), 'danger')
@@ -144,17 +178,33 @@ def delete_gare(ville, nom):
 
 # Lister tous les clients et possibilité de supprimer des clients
 @bp.route('/clients')
+@login_required
 def clients():
-    clients = Client.query.all()
-    return render_template('edit/clients.html', title='Clients', clients=clients)
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
+    clients = db.session.query(Client.id, Client.pseudo, Client.nom, Client.prenom, Client.age, Client.argent,
+                               Client.admin, Reduction.type).outerjoin(Reduction)
+
+    current_app.logger.info(clients)
+    current_app.logger.info(clients.all())
+
+    return render_template('edit/clients.html', title='Clients', clients=clients.all())
 
 
 # Supprimer un client
 @bp.route('/clients/delete/<id>')
+@login_required
 def delete_client(id):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     client = Client.query.filter_by(id=id).first()
     if client is None:
         flash('Le client {} n\'existe pas.'.format(id), 'danger')
+        return redirect(url_for('edit.clients'))
+    elif client.admin:
+        flash('Vous ne pouvez pas supprimez l\'administrateur!', 'danger')
         return redirect(url_for('edit.clients'))
     db.session.delete(client)
     db.session.commit()
@@ -168,7 +218,11 @@ def delete_client(id):
 
 # Lister toutes les réductions et possibilité de supprimer des réductions
 @bp.route('/reductions', methods=['GET', 'POST'])
+@login_required
 def reductions():
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     form = AddReductionForm()
     if form.validate_on_submit():
         reduction = Reduction(type=form.type.data, pourcentage=form.pourcentage.data, prix=form.prix.data)
@@ -182,7 +236,11 @@ def reductions():
 
 # Supprimer une réduction
 @bp.route('/reductions/delete/<id>')
+@login_required
 def delete_reduction(id):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     reduction = Reduction.query.filter_by(id=id).first()
     if reduction is None:
         flash('La reduction {} n\'existe pas.'.format(id), 'danger')
@@ -198,7 +256,11 @@ def delete_reduction(id):
 
 # Lister tous les voyages, et possibilité de rajouter ou supprimer des voyages
 @bp.route('/voyages', methods=['GET', 'POST'])
+@login_required
 def voyages():
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     # ajouter un voyage
     form = AddVoyageForm()
 
@@ -247,7 +309,11 @@ def voyages():
 
 # Visualiser un voyage en particulier, avec les billets
 @bp.route('/voyages/<id>')
+@login_required
 def edit_voyage(id):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     voyage = Voyage.query.filter_by(id=id).first_or_404()
     gareDepart = Gare.query.filter_by(id=voyage.idGareDepart).first()
     gareArrivee = Gare.query.filter_by(id=voyage.idGareArrivee).first()
@@ -258,7 +324,11 @@ def edit_voyage(id):
 
 # Supprimer un voyage
 @bp.route('/voyages/delete/<id>')
+@login_required
 def delete_voyage(id):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     voyage = Voyage.query.filter_by(id=id).first()
     if voyage is None:
         flash('Le voyage {} n\'existe pas.'.format(id), 'danger')
@@ -269,9 +339,13 @@ def delete_voyage(id):
     return redirect(url_for('edit.voyages'))
 
 
-# Renvoie tous les trains qui
+# Renvoie tous les trains qui sot disponibles aux horaires indiquées
 @bp.route('/trains/<horaireDepart>/<horaireArrivee>')
+@login_required
 def get_trains_horaires(horaireDepart, horaireArrivee):
+    if not current_user.admin:
+        return redirect(url_for('main.index'))
+
     horaireDepart = datetime.strptime(horaireDepart, '%d-%m-%YT%H:%M')
     horaireArrivee = datetime.strptime(horaireArrivee, '%d-%m-%YT%H:%M')
 
@@ -294,34 +368,3 @@ def get_trains_horaires(horaireDepart, horaireArrivee):
     response = make_response(json.dumps(data))
     response.content_type = 'application/json'
     return response
-
-
-# DELETE ALL
-# ==========
-
-@bp.route('/delete_all')
-def delete_all():
-    clients = Client.query.all()
-    for client in clients:
-        db.session.delete(client)
-    trains = Train.query.all()
-    for train in trains:
-        db.session.delete(train)
-    voitures = Voiture.query.all()
-    for voiture in voitures:
-        db.session.delete(voiture)
-    places = Place.query.all()
-    for place in places:
-        db.session.delete(place)
-    gares = Gare.query.all()
-    for gare in gares:
-        db.session.delete(gare)
-    voyages = Voyage.query.all()
-    for voyage in voyages:
-        db.session.delete(voyage)
-    billets = Billet.query.all()
-    for billet in billets:
-        db.session.delete(billet)
-    db.session.commit()
-    flash('Toutes les données ont été supprimées'.format(id), 'success')
-    return redirect(url_for('edit.edit_index'))

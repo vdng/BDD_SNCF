@@ -19,7 +19,7 @@ class RegistrationForm(FlaskForm):
                                                       message="L'âge doit être compris etre %(min) et %(max) ans")])
     pseudo = StringField('Pseudo', validators=[DataRequired()])
     password = PasswordField('Mot de passe', validators=[DataRequired()])
-    password2 = PasswordField('Confirmation du mot de masse',
+    password2 = PasswordField('Confirmation du mot de passe',
                               validators=[DataRequired(),
                                           EqualTo('password',
                                                   message='Le mot de passe et sa confirmation sont différents')])

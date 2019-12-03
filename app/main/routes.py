@@ -2,14 +2,29 @@ from flask import render_template, send_from_directory, redirect, url_for, flash
 from app.main import bp
 from flask_login import current_user, login_required
 from app.main.forms import *
-from app.models import Voyage, Gare, Reduction, Place, Billet
+from app.models import Voyage, Gare, Reduction, Place, Billet, Client
 import json
 
+
+@bp.route('/create_admin')
+def create_admin():
+    has_admin = Client.query.filter_by(admin=True).first()
+    if has_admin:
+        flash('Un admin existe déjà !', 'info')
+    else:
+        admin = Client(pseudo='admin', nom='admin', prenom='admin', age=99, argent=0, admin=True)
+        db.session.add(admin)
+        db.session.commit()
+        flash('Vous venez de créer un admin !', 'success')
+    return redirect(url_for('edit.edit_index'))
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    if current_user.admin:
+        return redirect(url_for('edit.edit_index'))
+
     form = RechercheTrajet()
 
     gares = Gare.query.all()
@@ -44,6 +59,9 @@ def gares_get_all_butt(gareId):
 # Visualiser un voyage en particulier et effectuer une réservation
 @bp.route('/voyages/<voyageId>', methods=['GET', 'POST'])
 def voyage(voyageId):
+    if current_user.admin:
+        return redirect(url_for('edit.edit_index'))
+
     voyage = Voyage.query.filter_by(id=voyageId).first_or_404()
     gareDepart = Gare.query.filter_by(id=voyage.idGareDepart).first()
     gareArrivee = Gare.query.filter_by(id=voyage.idGareArrivee).first()
@@ -85,6 +103,9 @@ def voyage(voyageId):
 
 @bp.route('/trains/<numTrain>/classe1')
 def get_voitures_classe1(numTrain):
+    if current_user.admin:
+        return redirect(url_for('edit.edit_index'))
+
     train = Train.query.filter_by(numTrain=numTrain).first()
     voitures = train.voitures.filter_by(classe1=True)
     data = [(voiture.id, '{}'.format(voiture.numVoiture)) for voiture in voitures]
@@ -95,6 +116,9 @@ def get_voitures_classe1(numTrain):
 
 @bp.route('/trains/<numTrain>/classe2')
 def get_voitures_classe2(numTrain):
+    if current_user.admin:
+        return redirect(url_for('edit.edit_index'))
+
     train = Train.query.filter_by(numTrain=numTrain).first()
     voitures = train.voitures.filter_by(classe1=False)
     data = [(voiture.id, '{}'.format(voiture.numVoiture)) for voiture in voitures]
@@ -104,6 +128,9 @@ def get_voitures_classe2(numTrain):
 
 @bp.route('/voitures/<voitureId>/places')
 def get_places(voitureId):
+    if current_user.admin:
+        return redirect(url_for('edit.edit_index'))
+
     voiture = Voiture.query.filter_by(id=voitureId).first()
     data = [(place.id, '{}'.format(place.numPlace)) for place in voiture.places]
     response = make_response(json.dumps(data))
@@ -119,6 +146,9 @@ def favicon():
 @bp.route('/moncompte', methods=['GET', 'POST'])
 @login_required
 def moncompte():
+    if current_user.admin:
+        return redirect(url_for('edit.edit_index'))
+
     form_portefeuille = RechargerArgent()
     if form_portefeuille.validate_on_submit():
         current_user.set_argent(current_user.argent + form_portefeuille.recharge.data)
