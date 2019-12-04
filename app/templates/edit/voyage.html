@@ -76,10 +76,10 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #5757BA;
-background: -webkit-linear-gradient(top left, #5757BA, #C698B3);
-background: -moz-linear-gradient(top left, #5757BA, #C698B3);
-background: linear-gradient(to bottom right, #5757BA, #C698B3);
+background-image: url('{{url_for('static', filename='rails.jpg')}}');
+background-size: cover;
+background-position: center;
+color: white;
 }
 </style>
 {% endblock %}

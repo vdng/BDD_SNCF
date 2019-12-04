@@ -91,12 +91,11 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #E995AE;
-background: -webkit-linear-gradient(top left, #E995AE, #87A9C5);
-background: -moz-linear-gradient(top left, #E995AE, #87A9C5);
-background: linear-gradient(to bottom right, #E995AE, #87A9C5);
+background-image: url('{{url_for('static', filename='siege.jpg')}}');
+background-size: cover;
+background-position: center;
+color: #c65b5b;
 }
-
 </style>
 {% endblock %}
 

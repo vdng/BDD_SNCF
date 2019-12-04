@@ -51,10 +51,10 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #73BABF;
-background: -webkit-linear-gradient(top left, #73BABF, #2DAFDA);
-background: -moz-linear-gradient(top left, #73BABF, #2DAFDA);
-background: linear-gradient(to bottom right, #73BABF, #2DAFDA);
+background-image: url('{{url_for('static', filename='partdieu.jpg')}}');
+background-size: cover;
+background-position: center;
+color: white;
 }
 </style>
 {% endblock %}

@@ -51,10 +51,10 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #EE8635;
-background: -webkit-linear-gradient(top left, #EE8635, #BFA74E);
-background: -moz-linear-gradient(top left, #EE8635, #BFA74E);
-background: linear-gradient(to bottom right, #EE8635, #BFA74E);
+background-image: url('{{url_for('static', filename='greve.jpg')}}');
+background-size: cover;
+background-position: center;
+color: white;
 }
 </style>
 {% endblock %}

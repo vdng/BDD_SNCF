@@ -20,10 +20,10 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #D26D9E;
-background: -webkit-linear-gradient(top left, #D26D9E, #CBBAEE);
-background: -moz-linear-gradient(top left, #D26D9E, #CBBAEE);
-background: linear-gradient(to bottom right, #D26D9E, #CBBAEE);
+background-image: url('{{url_for('static', filename='connexion.jpg')}}');
+background-size: cover;
+background-position: center;
+color: white;
 }
 </style>
 {% endblock %}

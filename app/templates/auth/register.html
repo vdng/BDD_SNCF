@@ -15,10 +15,9 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #A7CC8E;
-background: -webkit-linear-gradient(top left, #A7CC8E, #62C597);
-background: -moz-linear-gradient(top left, #A7CC8E, #62C597);
-background: linear-gradient(to bottom right, #A7CC8E, #62C597);
+background-image: url('{{url_for('static', filename='boutique.jpg')}}');
+background-size: cover;
+background-position: center;
 }
 </style>
 {% endblock %}

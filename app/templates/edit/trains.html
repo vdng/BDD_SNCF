@@ -53,11 +53,10 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #C5D4D2;
-background: -webkit-linear-gradient(top left, #C5D4D2, #7A9AC8);
-background: -moz-linear-gradient(top left, #C5D4D2, #7A9AC8);
-background: linear-gradient(to bottom right, #C5D4D2, #7A9AC8);
+background-image: url('{{url_for('static', filename='inoui.jpg')}}');
+background-size: cover;
+background-position: center;
+color: white;
 }
-
 </style>
 {% endblock %}

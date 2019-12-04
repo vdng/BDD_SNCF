@@ -51,10 +51,9 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #F3BA8D;
-background: -webkit-linear-gradient(top left, #F3BA8D, #BF4E4E);
-background: -moz-linear-gradient(top left, #F3BA8D, #BF4E4E);
-background: linear-gradient(to bottom right, #F3BA8D, #BF4E4E);
+background-image: url('{{url_for('static', filename='cartes.jpg')}}');
+background-size: cover;
+background-position: center;
 }
 </style>
 {% endblock %}

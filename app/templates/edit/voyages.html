@@ -5,11 +5,11 @@
 {{ super() }}
 <link href="{{ url_for('static', filename='bootstrap-datetimepicker.min.css') }}" rel="stylesheet" media="screen">
 <style>
-    .jumbotron {
-background: #6ACF6D;
-background: -webkit-linear-gradient(top left, #6ACF6D, #BFBE4E);
-background: -moz-linear-gradient(top left, #6ACF6D, #BFBE4E);
-background: linear-gradient(to bottom right, #6ACF6D, #BFBE4E);
+.jumbotron {
+background-image: url('{{url_for('static', filename='rails.jpg')}}');
+background-size: cover;
+background-position: top;
+color: white;
 }
 </style>
 {% endblock %}

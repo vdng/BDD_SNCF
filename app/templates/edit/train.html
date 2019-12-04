@@ -55,10 +55,9 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #5930F3;
-background: -webkit-linear-gradient(top left, #5930F3, #5EEA86);
-background: -moz-linear-gradient(top left, #5930F3, #5EEA86);
-background: linear-gradient(to bottom right, #5930F3, #5EEA86);
+background-image: url('{{url_for('static', filename='tgv.jpg')}}');
+background-size: cover;
+background-position: center;
 }
 </style>
 {% endblock %}

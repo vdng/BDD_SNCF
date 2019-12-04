@@ -80,12 +80,9 @@
 {{super()}}
 <style>
 .jumbotron {
-background: #E79E7F;
-background: -webkit-linear-gradient(top left, #E79E7F, #9EDA6E);
-background: -moz-linear-gradient(top left, #E79E7F, #9EDA6E);
-background: linear-gradient(to bottom right, #E79E7F, #9EDA6E);
+background-image: url('{{url_for('static', filename='quai.jfif')}}');
+background-size: cover;
+background-position: bottom;
 }
-
-
 </style>
 {% endblock %}
