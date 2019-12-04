@@ -4,7 +4,7 @@
     <list default="true" id="cc3c56af-50ab-45e9-ac6a-351ad4f8810e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/edit/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/edit/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/edit/gares.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit/gares.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
