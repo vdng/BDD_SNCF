@@ -184,10 +184,7 @@ def clients():
         return redirect(url_for('main.index'))
 
     clients = db.session.query(Client.id, Client.pseudo, Client.nom, Client.prenom, Client.age, Client.argent,
-                               Client.admin, Reduction.type).outerjoin(Reduction)
-
-    current_app.logger.info(clients)
-    current_app.logger.info(clients.all())
+                               Client.admin, Reduction.type).outerjoin(Reduction).filter(Client.admin==False)
 
     return render_template('edit/clients.html', title='Clients', clients=clients.all())
 
