@@ -49,13 +49,14 @@ def trains():
                                               ).join(Place, Voiture.id == Place.idVoiture
                                                      ).group_by(Train.numTrain).cte(name="trains_capacite")
 
-    trains_nbVoitures = db.session.query(trains_capacite.c.numTrain, db.func.max(trains_capacite.c.capacite),
+    trains_nbVoitures = db.session.query(trains_capacite.c.numTrain,
+                                         db.func.max(trains_capacite.c.capacite).label("capacite"),
                                          db.func.count(Voiture.id).label("nbVoitures")
                                          ).join(Voiture, trains_capacite.c.numTrain == Voiture.numTrain
                                                 ).group_by(trains_capacite.c.numTrain).cte(name="trains_nbVoitures")
 
-    trains = db.session.query(trains_nbVoitures.c.numTrain, db.func.max(trains_nbVoitures.c.capacite),
-                              db.func.max(trains_nbVoitures.c.nbVoitures),
+    trains = db.session.query(trains_nbVoitures.c.numTrain, db.func.max(trains_nbVoitures.c.capacite).label("capacite"),
+                              db.func.max(trains_nbVoitures.c.nbVoitures).label("nbVoitures"),
                               db.func.count(Voiture.id).label("nbClasse1")
                               ).outerjoin(Voiture, trains_nbVoitures.c.numTrain == Voiture.numTrain
                                           ).filter(Voiture.classe1 == True).group_by(trains_nbVoitures.c.numTrain)
@@ -184,7 +185,7 @@ def clients():
         return redirect(url_for('main.index'))
 
     clients = db.session.query(Client.id, Client.pseudo, Client.nom, Client.prenom, Client.age, Client.argent,
-                               Client.admin, Reduction.type).outerjoin(Reduction).filter(Client.admin==False)
+                               Client.admin, Reduction.type).outerjoin(Reduction).filter(Client.admin == False)
 
     return render_template('edit/clients.html', title='Clients', clients=clients.all())
 
