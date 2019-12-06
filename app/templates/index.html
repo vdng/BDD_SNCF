@@ -57,8 +57,8 @@
                 style="cursor:pointer">
                 <td>{{ voyage.horaireDepart }}</td>
                 <td>{{ voyage.horaireArrivee }}</td>
-                <td>{{ voyage.prixClasse1 * (1 - reduction / 100) | round }} €</td>
                 <td>{{ voyage.prixClasse2 * (1 - reduction / 100) | round }} €</td>
+                <td>{{ voyage.prixClasse1 * (1 - reduction / 100) | round }} €</td>
             </tr>
             {% endfor %}
             </tbody>
